@@ -1,0 +1,26 @@
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build
+
+# IntelliJ
+*.iml
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/gradle.xml
+.idea/assetWizardSettings.xml
+.idea/dictionaries
+.idea/libraries
+.idea/caches
+
+# Ignore credentials
+credentials.json
+
+.idea
+
+# Gradle files
+gradle/
+build/
+
+tokens/
