@@ -1,13 +1,16 @@
+import Drive.List;
+import Drive.Upload;
+
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
 import static Drive.Drive.DriveInit;
-import static Drive.Upload.Upload;
 
 public class Main {
     public static void main(String[] args) throws IOException, GeneralSecurityException {
-        DriveInit();
-        String filePath = "C:\\Users\\musta\\IdeaProjects\\drive2crypto\\src\\main\\resources\\files\\photo.jpg";
-        Upload(filePath);
+        com.google.api.services.drive.Drive service = DriveInit();
+        List.listFiles(service);
+        String filePath = "C:\\Users\\musta\\IdeaProjects\\CryptoDrive\\src\\main\\resources\\files\\photo.jpg";
+        Upload.withPath(filePath);
     }
 }
