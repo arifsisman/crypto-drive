@@ -8,7 +8,7 @@ import java.io.OutputStream;
 import java.util.Scanner;
 
 public class Download {
-    public static void listItems(int listSize) throws IOException {
+    public static void listAndDownload(int listSize) throws IOException {
         int index = 0;
         Scanner sc = new Scanner(System.in);
         java.util.List<File> files = List.getFileList(listSize);

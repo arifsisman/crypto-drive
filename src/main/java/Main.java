@@ -15,10 +15,9 @@ public class Main {
         //List.getFileList(10);
         //String filePath = "src/main/resources/files/photo.jpg";
         //Upload.withPath(filePath);
-        //String fileId = Download.listItems(20);
-        //Download.downloadFile(fileId);
+        Download.listAndDownload(20);
         //Download.listItems(20);
-        String folderId = Folder.create("Test folder");
-        Folder.insert("photo.jpg", folderId, "src/main/resources/files/photo.jpg");
+        //String folderId = Folder.create("Test folder");
+        //Folder.insert("photo.jpg", folderId, "src/main/resources/files/photo.jpg");
     }
 }
