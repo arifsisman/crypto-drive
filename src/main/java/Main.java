@@ -1,6 +1,8 @@
 import Drive.Download;
+import Drive.Folder;
 import Drive.List;
 import Drive.Upload;
+import org.graalvm.compiler.api.replacements.Fold;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -15,6 +17,8 @@ public class Main {
         //Upload.withPath(filePath);
         //String fileId = Download.listItems(20);
         //Download.downloadFile(fileId);
-        Download.listItems(20);
+        //Download.listItems(20);
+        String folderId = Folder.create("Test folder");
+        Folder.insert("photo.jpg", folderId, "src/main/resources/files/photo.jpg");
     }
 }
