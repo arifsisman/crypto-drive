@@ -1,16 +1,16 @@
 package Drive;
 
-import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
 
 import java.io.IOException;
 
 public class List {
-    public static void listFiles(Drive service) throws IOException {
-        // Print the names and IDs for up to 10 files.
-        FileList result = service.files().list()
-                .setPageSize(10)
+    public static java.util.List<File> getFileList(int size) throws IOException {
+        int counter = 0;
+        // Print the names and IDs.
+        FileList result = Drive.service.files().list()
+                .setPageSize(size)
                 .setFields("nextPageToken, files(id, name)")
                 .execute();
         java.util.List<File> files = result.getFiles();
@@ -19,8 +19,10 @@ public class List {
         } else {
             System.out.println("Files:");
             for (File file : files) {
-                System.out.printf("%s (%s)\n", file.getName(), file.getId());
+                System.out.printf("%d) %s (%s)\n", counter, file.getName(), file.getId());
+                counter++;
             }
         }
+        return files;
     }
 }

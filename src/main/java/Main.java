@@ -1,3 +1,4 @@
+import Drive.Download;
 import Drive.List;
 import Drive.Upload;
 
@@ -8,9 +9,12 @@ import static Drive.Drive.DriveInit;
 
 public class Main {
     public static void main(String[] args) throws IOException, GeneralSecurityException {
-        com.google.api.services.drive.Drive service = DriveInit();
-        List.listFiles(service);
-        String filePath = "src/main/resources/files/photo.jpg";
-        Upload.withPath(filePath);
+        DriveInit();
+        //List.getFileList(10);
+        //String filePath = "src/main/resources/files/photo.jpg";
+        //Upload.withPath(filePath);
+        //String fileId = Download.listItems(20);
+        //Download.downloadFile(fileId);
+        Download.listItems(20);
     }
 }
