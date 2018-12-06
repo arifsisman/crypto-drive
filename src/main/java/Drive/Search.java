@@ -8,23 +8,46 @@ import java.io.IOException;
 import static Drive.DriveService.service;
 
 public class Search {
-    public static void searchFiles(String fileId){
+    public static void searchFilesById(String fileId){
         String pageToken = null;
         try{
         do {
             FileList result = service.files().list()
+                    .setQ("mimeType != 'application/vnd.google-apps.folder'")
                     .setQ("'"+fileId+"' in parents")
                     .setSpaces("drive")
                     .setFields("nextPageToken, files(id, name)")
                     .setPageToken(pageToken)
                     .execute();
             for (File file : result.getFiles()) {
-                System.out.printf("Found file: %s (%s) Type:%s\n",
-                        file.getName(), file.getId(), file.getMimeType());
-                //if(file.getMimeType()==)
+                System.out.printf("Found file: %s (%s)\n",
+                        file.getName(), file.getId());
             }
             pageToken = result.getNextPageToken();
         } while (pageToken != null);}
+        catch (IOException e){
+            System.out.println("No files found.");
+        }
+    }
+
+    public static void searchFilesByName(String fileName,String folderId){
+        String pageToken = null;
+        try{
+            do {
+                FileList result = service.files().list()
+                        .setQ("mimeType != 'application/vnd.google-apps.folder'")
+                        .setQ("name contains '"+fileName+"'")
+                        .setQ("'"+folderId+"' in parents")
+                        .setSpaces("drive")
+                        .setFields("nextPageToken, files(id, name)")
+                        .setPageToken(pageToken)
+                        .execute();
+                for (File file : result.getFiles()) {
+                    System.out.printf("Found file: %s (%s)\n",
+                            file.getName(), file.getId());
+                }
+                pageToken = result.getNextPageToken();
+            } while (pageToken != null);}
         catch (IOException e){
             System.out.println("No files found.");
         }
@@ -37,6 +60,7 @@ public class Search {
         try{
             do {
             FileList result = service.files().list()
+                    .setQ("mimeType = 'application/vnd.google-apps.folder'")
                     .setQ("name = '"+folderName+"'")
                     .setSpaces("drive")
                     .setFields("nextPageToken, files(id, name)")

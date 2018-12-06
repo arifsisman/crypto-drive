@@ -13,7 +13,7 @@ public class Download {
     public static void listAndDownload(int listSize){
         int index = 0;
         Scanner sc = new Scanner(System.in);
-        java.util.List<File> files = List.files(listSize);
+        java.util.List<File> files = List.listFiles(listSize);
         System.out.println("Please enter the number of the file to be downloaded: ");
         if(sc.hasNextInt()){
             index = sc.nextInt();

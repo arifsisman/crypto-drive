@@ -8,7 +8,7 @@ import java.io.IOException;
 import static Drive.DriveService.service;
 
 public class List {
-    public static java.util.List<File> files(int size){
+    public static java.util.List<File> listFiles(int size){
         int counter = 0;
         // Print the file names and IDs.
         FileList result = null;
@@ -34,7 +34,7 @@ public class List {
         return files;
     }
 
-    public static java.util.List<File> folders(int size){
+    public static java.util.List<File> listFolders(int size){
         int counter = 0;
         // Print the folder names and IDs.
         FileList result = null;
