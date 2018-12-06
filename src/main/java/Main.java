@@ -1,11 +1,12 @@
 import Drive.*;
 
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 import static Drive.DriveService.DriveServiceInit;
 
 public class Main {
-    private static com.google.api.services.drive.Drive service;
+    public static String folderId;
     public static void main(String[] args) throws IOException, GeneralSecurityException {
         DriveServiceInit();
         //List.getFileList(10);
@@ -13,8 +14,13 @@ public class Main {
         //Upload.withPath(filePath);
         //Download.listAndDownload(20);
         //Download.listItems(20);
-        //String folderId = Folder.create("CryptoDrive");
         //Folder.insert("photo.jpg", folderId, "src/main/resources/files/photo.jpg");
-        Search.searchFiles("1e193miK4BZO191OWHHQaHzzq5zxXF_YX");
+        folderId = Search.searchFolder("CryptoDrive");
+        if(folderId==null){//if there  is no folder named "CryptoDrive" then create new folder.
+            Folder.create("CryptoDrive");
+            folderId = Search.searchFolder("CryptoDrive");
+        }
+        Folder.insert(folderId, Paths.get("src/main/resources/files/photo.jpg"));
+        Search.searchFiles(folderId);
     }
 }

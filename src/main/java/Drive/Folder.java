@@ -18,23 +18,23 @@ public class Folder {
         File file = service.files().create(fileMetadata)
                 .setFields("id")
                 .execute();
-        System.out.println("Folder ID: " + file.getId());
+        System.out.println("Created folder ID: " + file.getId());
         return file.getId();
     }
 
-    public static String insert(String fileName, String folderId, String path) throws IOException {
+    public static String insert(String folderId, Path path) throws IOException {
         File fileMetadata = new File();
-        fileMetadata.setName(fileName);
+        fileMetadata.setName(path.getFileName().toString());
         fileMetadata.setParents(Collections.singletonList(folderId));
-        java.io.File filePath = new java.io.File(path);
+        java.io.File filePath = new java.io.File(path.toString());
         //Get mime type and fileName from path
-        Path pathObj = Paths.get(path);
+        Path pathObj = Paths.get(path.toString());
         String mime = Files.probeContentType(pathObj);
         FileContent mediaContent = new FileContent(mime, filePath);
         File file = service.files().create(fileMetadata, mediaContent)
                 .setFields("id, parents")
                 .execute();
-        System.out.println("File ID: " + file.getId());
+        System.out.println("Inserted file ID: " + file.getId());
         return file.getId();
     }
 }
