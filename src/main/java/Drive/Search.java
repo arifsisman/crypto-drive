@@ -2,11 +2,13 @@ package Drive;
 
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
+
 import java.io.IOException;
+
 import static Drive.DriveService.service;
 
 public class Search {
-    public static void searchFiles(String fileId) throws IOException {
+    public static void searchFiles(String fileId){
         String pageToken = null;
         try{
         do {
@@ -17,8 +19,9 @@ public class Search {
                     .setPageToken(pageToken)
                     .execute();
             for (File file : result.getFiles()) {
-                System.out.printf("Found file: %s (%s)\n",
-                        file.getName(), file.getId());
+                System.out.printf("Found file: %s (%s) Type:%s\n",
+                        file.getName(), file.getId(), file.getMimeType());
+                //if(file.getMimeType()==)
             }
             pageToken = result.getNextPageToken();
         } while (pageToken != null);}
@@ -27,7 +30,7 @@ public class Search {
         }
     }
 
-    public static String searchFolder(String folderName) throws IOException {
+    public static String searchFolder(String folderName){
         boolean hasFolder = false;
         String folderId = null;
         String pageToken = null;

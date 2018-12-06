@@ -26,6 +26,7 @@ public class DriveService {
     private static final java.util.Collection<String> SCOPES = DriveScopes.all();
     private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
     public static com.google.api.services.drive.Drive service;
+    public static String folderId;
     /**
      * Creates an authorized Credential object.
      * @param HTTP_TRANSPORT The network HTTP Transport.
@@ -53,7 +54,19 @@ public class DriveService {
         service = new com.google.api.services.drive.Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
                 .setApplicationName(APPLICATION_NAME)
                 .build();
+        hasFolder("CryptoDrive");
         return service;
+    }
+
+    public static String hasFolder(String folderName){
+        folderId = Search.searchFolder(folderName);
+        if(folderId == null){//if there  is no folder named "CryptoDrive" then create new folder.
+            Folder.create("CryptoDrive");
+            folderId = Search.searchFolder(folderName);
+        }
+        else
+            System.out.println(folderName+" is using as main folder.");
+        return folderId;
     }
 
 }

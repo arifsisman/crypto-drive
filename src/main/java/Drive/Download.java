@@ -1,16 +1,19 @@
 package Drive;
+
 import com.google.api.services.drive.model.File;
+
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Scanner;
+
 import static Drive.DriveService.service;
 
 public class Download {
-    public static void listAndDownload(int listSize) throws IOException {
+    public static void listAndDownload(int listSize){
         int index = 0;
         Scanner sc = new Scanner(System.in);
-        java.util.List<File> files = List.getFileList(listSize);
+        java.util.List<File> files = List.files(listSize);
         System.out.println("Please enter the number of the file to be downloaded: ");
         if(sc.hasNextInt()){
             index = sc.nextInt();
@@ -26,13 +29,12 @@ public class Download {
         downloadFile(fileName, fileId);
     }
 
-    public static File downloadFile(String fileName, String fileId) throws IOException {
+    public static File downloadFile(String fileName, String fileId){
+        try{
         FileOutputStream fos = null;
-
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         service.files().get(fileId)
                 .executeMediaAndDownloadTo(outputStream);
-
         try {
             fos = new FileOutputStream(new java.io.File("src/main/resources/files/"+fileName));
             outputStream.writeTo(fos);
@@ -40,10 +42,11 @@ public class Download {
             ioe.printStackTrace();
         } finally {
             fos.close();
-            System.out.println("Done");
+            System.out.println("Download finished.");}
         }
-
-
+        catch(IOException e){
+            System.out.println("An error occurred. Exception:"+e.getMessage());
+        }
         return new File();
     }
 }

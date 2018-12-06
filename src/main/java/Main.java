@@ -1,8 +1,9 @@
-import Drive.*;
+import Drive.List;
+import Drive.Upload;
 
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
+
 import static Drive.DriveService.DriveServiceInit;
 
 public class Main {
@@ -10,17 +11,15 @@ public class Main {
     public static void main(String[] args) throws IOException, GeneralSecurityException {
         DriveServiceInit();
         //List.getFileList(10);
-        //String filePath = "src/main/resources/files/photo.jpg";
-        //Upload.withPath(filePath);
+        //Upload.uploadFile(Paths.get("src/main/resources/files/photo.jpg"));
+        //Upload.toFolder("1_RWxhLaZsBJdU9lxGu8vDGQUcHaEQN9P",Paths.get("src/main/resources/files/photo.jpg"));
+
+        //List.getFileList(20);
+        List.folders(20);
+        Upload.file("src/main/resources/files/photo.jpg");
         //Download.listAndDownload(20);
         //Download.listItems(20);
-        //Folder.insert("photo.jpg", folderId, "src/main/resources/files/photo.jpg");
-        folderId = Search.searchFolder("CryptoDrive");
-        if(folderId==null){//if there  is no folder named "CryptoDrive" then create new folder.
-            Folder.create("CryptoDrive");
-            folderId = Search.searchFolder("CryptoDrive");
-        }
-        Folder.insert(folderId, Paths.get("src/main/resources/files/photo.jpg"));
-        Search.searchFiles(folderId);
+        //Folder.insert(folderId, Paths.get("src/main/resources/files/photo.jpg"));
+        //Search.searchFiles(folderId);
     }
 }

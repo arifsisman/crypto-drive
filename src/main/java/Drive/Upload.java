@@ -2,29 +2,55 @@ package Drive;
 
 import com.google.api.client.http.FileContent;
 import com.google.api.services.drive.model.File;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
+
 import static Drive.DriveService.service;
 
 public class Upload {
-    public static void withPath(String filePath) throws IOException{
-        //Get mime type and fileName from path
-        Path path = Paths.get(filePath);
-        String mime = Files.probeContentType(path);
-        System.out.println("File is uploading. Please wait...");
-        //Upload
-        uploadFile(path.getFileName().toString(), new java.io.File(filePath),mime);
+    public static String file(String filePath){
+        try{
+            Path realPath = Paths.get(filePath);
+            //Get mime type and fileName from path
+            String mime = Files.probeContentType(realPath);
+            System.out.println("File is uploading. Please wait...");
+            //Upload
+            File fileMetadata = new File();
+            fileMetadata.setName(realPath.getFileName().toString());
+            FileContent mediaContent = new FileContent(mime, realPath.toFile());
+            File file = service.files().create(fileMetadata, mediaContent)
+                    .setFields("id")
+                    .execute();
+            System.out.println("File upload completed.");
+            return "File ID: " + file.getId();
+        }
+        catch (IOException e){
+        System.out.println("An error occurred while uploading file. "+e.getMessage());}
+        return null;
     }
 
-    static String uploadFile(String fileName, java.io.File filePath, String type) throws IOException{
-        File fileMetadata = new File();
-        fileMetadata.setName(fileName);
-        FileContent mediaContent = new FileContent(type, filePath);
-        File file = service.files().create(fileMetadata, mediaContent)
-                .setFields("id")
-                .execute();
-        return "File ID: " + file.getId();
+    public static String toFolder(String folderId, String filePath){
+        try{
+            Path realPath = Paths.get(filePath);
+            File fileMetadata = new File();
+            fileMetadata.setName(realPath.getFileName().toString());
+            fileMetadata.setParents(Collections.singletonList(folderId));
+            java.io.File fileObj = new java.io.File(filePath.toString());
+            //Get mime type and fileName from path
+            String mime = Files.probeContentType(realPath);
+            FileContent mediaContent = new FileContent(mime, realPath.toFile());
+            File file = service.files().create(fileMetadata, mediaContent)
+                    .setFields("id, parents")
+                    .execute();
+            System.out.println("Inserted file ID: " + file.getId());
+            return file.getId();
+        }
+        catch (IOException e){
+            System.out.println("An error occurred while uploading file. "+e.getMessage());}
+        return null;
     }
 }
