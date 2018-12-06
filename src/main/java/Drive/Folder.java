@@ -2,12 +2,12 @@ package Drive;
 
 import com.google.api.client.http.FileContent;
 import com.google.api.services.drive.model.File;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
+import static Drive.DriveService.service;
 
 public class Folder {
     public static String create(String folderName) throws IOException {
@@ -15,7 +15,7 @@ public class Folder {
         fileMetadata.setName(folderName);
         fileMetadata.setMimeType("application/vnd.google-apps.folder");
 
-        File file = Drive.service.files().create(fileMetadata)
+        File file = service.files().create(fileMetadata)
                 .setFields("id")
                 .execute();
         System.out.println("Folder ID: " + file.getId());
@@ -31,7 +31,7 @@ public class Folder {
         Path pathObj = Paths.get(path);
         String mime = Files.probeContentType(pathObj);
         FileContent mediaContent = new FileContent(mime, filePath);
-        File file = Drive.service.files().create(fileMetadata, mediaContent)
+        File file = service.files().create(fileMetadata, mediaContent)
                 .setFields("id, parents")
                 .execute();
         System.out.println("File ID: " + file.getId());

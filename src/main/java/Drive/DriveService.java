@@ -18,7 +18,7 @@ import java.io.InputStreamReader;
 import java.security.GeneralSecurityException;
 
 
-public class Drive {
+public class DriveService {
     private static final String APPLICATION_NAME = "CryptoDrive";
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
     private static final String TOKENS_DIRECTORY_PATH = "tokens";
@@ -34,7 +34,7 @@ public class Drive {
      */
     private static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
         // Load client secrets.
-        InputStream in = Drive.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
+        InputStream in = DriveService.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
 
         // Build flow and trigger user authorization request.
@@ -47,7 +47,7 @@ public class Drive {
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
     }
 
-    public static com.google.api.services.drive.Drive DriveInit(String... args) throws IOException, GeneralSecurityException {
+    public static com.google.api.services.drive.Drive DriveServiceInit(String... args) throws IOException, GeneralSecurityException {
         // Build a new authorized API client service.
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
         service = new com.google.api.services.drive.Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))

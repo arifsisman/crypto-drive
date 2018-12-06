@@ -1,11 +1,10 @@
 package Drive;
 import com.google.api.services.drive.model.File;
-
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Scanner;
+import static Drive.DriveService.service;
 
 public class Download {
     public static void listAndDownload(int listSize) throws IOException {
@@ -31,7 +30,7 @@ public class Download {
         FileOutputStream fos = null;
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        Drive.service.files().get(fileId)
+        service.files().get(fileId)
                 .executeMediaAndDownloadTo(outputStream);
 
         try {

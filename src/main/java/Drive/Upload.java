@@ -2,11 +2,11 @@ package Drive;
 
 import com.google.api.client.http.FileContent;
 import com.google.api.services.drive.model.File;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import static Drive.DriveService.service;
 
 public class Upload {
     public static void withPath(String filePath) throws IOException{
@@ -22,7 +22,7 @@ public class Upload {
         File fileMetadata = new File();
         fileMetadata.setName(fileName);
         FileContent mediaContent = new FileContent(type, filePath);
-        File file = Drive.service.files().create(fileMetadata, mediaContent)
+        File file = service.files().create(fileMetadata, mediaContent)
                 .setFields("id")
                 .execute();
         return "File ID: " + file.getId();

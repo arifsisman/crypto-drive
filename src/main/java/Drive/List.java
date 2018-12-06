@@ -2,14 +2,14 @@ package Drive;
 
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
-
 import java.io.IOException;
+import static Drive.DriveService.service;
 
 public class List {
     public static java.util.List<File> getFileList(int size) throws IOException {
         int counter = 0;
         // Print the names and IDs.
-        FileList result = Drive.service.files().list()
+        FileList result = service.files().list()
                 .setPageSize(size)
                 .setFields("nextPageToken, files(id, name)")
                 .execute();
