@@ -48,7 +48,7 @@ public class DriveService {
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
     }
 
-    public static com.google.api.services.drive.Drive DriveServiceInit(String... args) throws IOException, GeneralSecurityException {
+    public static com.google.api.services.drive.Drive initialize(String... args) throws IOException, GeneralSecurityException {
         // Build a new authorized API client service.
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
         service = new com.google.api.services.drive.Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))

@@ -1,19 +1,24 @@
 import Drive.DriveService;
-import Drive.List;
-import Drive.Search;
-import Drive.Upload;
+import Monitor.MonitorDirectory;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-
-import static Drive.DriveService.DriveServiceInit;
+import java.security.Security;
 
 public class Main {
     public static String folderId;
-    public static void main(String[] args) throws IOException, GeneralSecurityException {
-        DriveServiceInit();
+    public static void main(String[] args) throws IOException, GeneralSecurityException, InterruptedException {
+        //Drive Service initialization
+        DriveService.initialize();
+        //Bouncy Castle provider for crypto operations
+        Security.addProvider(new BouncyCastleProvider());
+        //Monitor the directory for changes
+        MonitorDirectory.listen();
+
+
+
+
         //Search.searchFilesByName("", DriveService.folderId);
         //TextMenu menu = new TextMenu();
         //menu.MenuInit();
