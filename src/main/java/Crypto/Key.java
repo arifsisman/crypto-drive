@@ -1,10 +1,12 @@
 package Crypto;
 
+import org.bouncycastle.util.encoders.Hex;
+
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.security.*;
-import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 
 public class Key {
@@ -60,23 +62,30 @@ public class Key {
         }
     }
 
-    static SecretKey getKey(String keyAlias) throws UnrecoverableEntryException, NoSuchAlgorithmException, KeyStoreException {
+    static SecretKey getKey(String fileName) throws UnrecoverableEntryException, NoSuchAlgorithmException, KeyStoreException {
         KeyStore.ProtectionParameter entryPassword =
                 new KeyStore.PasswordProtection(keyStorePassword);
 
-        KeyStore.SecretKeyEntry keyEntry = (KeyStore.SecretKeyEntry)keyStore.getEntry(keyAlias, entryPassword);
-        //Certificate google = keyStore.getCertificate("google.com");
+        KeyStore.SecretKeyEntry keyEntry = (KeyStore.SecretKeyEntry)keyStore.getEntry(hash(fileName), entryPassword);
         return keyEntry.getSecretKey();
     }
 
-    static void setKey(SecretKey key) throws KeyStoreException {
+    static void setKey(SecretKey key, String fileName) throws KeyStoreException, NoSuchAlgorithmException {
         KeyStore.ProtectionParameter entryPassword =
                 new KeyStore.PasswordProtection(keyStorePassword);
 
         KeyStore.SecretKeyEntry secretKeyEntry = new KeyStore.SecretKeyEntry(key);
 
+        keyStore.setEntry(hash(fileName), secretKeyEntry, entryPassword);
+    }
 
-        keyStore.setEntry("keyAlias", secretKeyEntry, entryPassword);
-        //keyStore.setCertificateEntry("google.com", trustedCertificate);
+    static String hash(String fileName) throws NoSuchAlgorithmException {
+//        String sha256hex = DigestUtils.sha256Hex(fileName);
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hash = digest.digest(
+                fileName.getBytes(StandardCharsets.UTF_8));
+        String sha256hex = new String(Hex.encode(hash));
+        //System.out.println("sha alias is:"+sha256hex);
+        return sha256hex;
     }
 }

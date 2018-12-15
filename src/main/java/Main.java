@@ -23,7 +23,6 @@ public class Main {
         //Cipher initialize for encryption/decryption operations
         CipherOps.setCipherMode();
         CipherOps.encrypt("C:\\Users\\musta\\IdeaProjects\\CryptoDrive\\src\\main\\resources\\files\\photo.jpg");
-        Key.keyStoreLoad();
         CipherOps.decrypt("C:\\Users\\musta\\IdeaProjects\\CryptoDrive\\src\\main\\resources\\files\\photo.jpg.enc");
 
 
