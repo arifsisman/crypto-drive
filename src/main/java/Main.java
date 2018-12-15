@@ -1,21 +1,34 @@
+import Crypto.CipherOps;
+import Crypto.Key;
+import Crypto.Provider;
 import Drive.DriveService;
 import Monitor.MonitorDirectory;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.security.Security;
+
 
 public class Main {
     public static String folderId;
     public static void main(String[] args) throws IOException, GeneralSecurityException, InterruptedException {
         //Drive Service initialization
         DriveService.initialize();
-        //Bouncy Castle provider for crypto operations
-        Security.addProvider(new BouncyCastleProvider());
-        //Monitor the directory for changes
-        MonitorDirectory.listen();
 
+        //Bouncy Castle provider for crypto operations
+        Provider.addProvider();
+
+        //Key Store initialization
+        Key.keyStoreInit();
+        Key.keyStoreLoad();
+        //Cipher initialize for encryption/decryption operations
+        CipherOps.setCipherMode();
+        CipherOps.encrypt("C:\\Users\\musta\\IdeaProjects\\CryptoDrive\\src\\main\\resources\\files\\photo.jpg");
+        Key.keyStoreLoad();
+        CipherOps.decrypt("C:\\Users\\musta\\IdeaProjects\\CryptoDrive\\src\\main\\resources\\files\\photo.jpg.enc");
+
+
+        //Monitor the directory for changes
+        //MonitorDirectory.listen();
 
 
 

@@ -20,5 +20,6 @@ dependencies {
     compile 'com.google.apis:google-api-services-drive:v3-rev110-1.23.0'
     // https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk15on
     compile group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.60'
-
+    // https://mvnrepository.com/artifact/commons-io/commons-io
+    compile group: 'commons-io', name: 'commons-io', version: '2.4'
 }
