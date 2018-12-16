@@ -74,13 +74,14 @@ public class CipherOps {
         }
         byte[] cipherText  = Files.readAllBytes(path);
         byte[] plainText = cipher.doFinal(cipherText);
-        toFile("C:\\Users\\musta\\IdeaProjects\\CryptoDrive\\src\\main\\resources\\files\\"+"new", fileName, plainText);
-        //TODO remove new tag
+        toFile("C:\\Users\\musta\\IdeaProjects\\CryptoDrive\\src\\main\\resources\\files\\", "new"+fileName, plainText);
+        //TODO change file path to variable and remove new tag
         return plainText;
     }
 
     void toFile(String directory,String fileName,byte[] content) throws IOException {
-        FileUtils.writeByteArrayToFile(new File(directory+"\\"+fileName), content);
+        //FileUtils.writeByteArrayToFile(new File(directory+"\\"+fileName), content);
+        FileUtils.writeByteArrayToFile(new File(directory+ File.separator +fileName), content);
     }
 
 }
