@@ -27,7 +27,7 @@ public class DriveService {
 
     private static final java.util.Collection<String> SCOPES = DriveScopes.all();
     private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
-    private static com.google.api.services.drive.Drive service;
+    static com.google.api.services.drive.Drive service;
     public static String folderId;
     /**
      * Creates an authorized Credential object.

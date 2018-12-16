@@ -13,6 +13,7 @@ import java.nio.file.Path;
 import java.io.File;
 import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -24,15 +25,6 @@ import java.util.concurrent.Future;
 public class Main {
     private static Thread t;
     private static Future<?> future;
-    private static DirWatcher watcher;
-    static {
-        try {
-            watcher = new DirWatcher(Path.of(CDPaths.CRYPTO_DRIVE_UPLOAD));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public static void main(String[] args) throws IOException, GeneralSecurityException, InterruptedException {
         //Drive Service initialization
         DriveService.initialize();
@@ -103,8 +95,14 @@ public class Main {
     private static void threadMethod(){
         t = new Thread(()->{}) {
             public void run() {
+                DirWatcher watcher = null;
+                try {
+                    watcher = new DirWatcher(Path.of(CDPaths.CRYPTO_DRIVE_UPLOAD));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 ExecutorService executor = Executors.newSingleThreadExecutor();
-                future = executor.submit(watcher);
+                future = executor.submit(Objects.requireNonNull(watcher));
                 executor.shutdown();
             }
         };
