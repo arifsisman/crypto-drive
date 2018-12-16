@@ -10,32 +10,36 @@ import java.security.*;
 import java.security.cert.CertificateException;
 
 public class Key {
+    private final String KEYSTORE_PATH = "tokens/keystore.jks";
+    private final char[] KEYSTORE_PASSWORD = "CryptoDrive".toCharArray();
     static KeyStore keyStore;
-    static char[] keyStorePassword = "CryptoDrive".toCharArray();
 
-    public static void keyStoreInit() throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException {
+    public Key() throws KeyStoreException, IOException {
         keyStore = KeyStore.getInstance("JCEKS");
-        File f = new File("tokens/keystore.jks");
+        File f = new File(KEYSTORE_PATH);
         if(!f.exists()){
             f.getParentFile().mkdir();
             f.createNewFile();
         }
-        keyStore.load(null, keyStorePassword);
+        loadKey();
     }
 
-    static SecretKey generateKey() throws NoSuchAlgorithmException {
+    SecretKey generateKey() throws NoSuchAlgorithmException {
         KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
-
-        SecureRandom secureRandom = new SecureRandom();
-        keyGenerator.init(256, secureRandom);
-
+        keyGenerator.init(256, new SecureRandom());
         SecretKey secretKey = keyGenerator.generateKey();
         return secretKey;
     }
 
-    public static void keyStoreLoad() throws IOException, KeyStoreException, CertificateException, NoSuchAlgorithmException {
-        try(InputStream keyStoreData = new FileInputStream("tokens/keystore.jks")){
-            keyStore.load(keyStoreData, keyStorePassword);
+    void storeKey() throws IOException, CertificateException, NoSuchAlgorithmException, KeyStoreException {
+        try (FileOutputStream keyStoreOutputStream = new FileOutputStream(KEYSTORE_PATH)) {
+            keyStore.store(keyStoreOutputStream, KEYSTORE_PASSWORD);
+        }
+    }
+
+    private void loadKey(){
+        try(InputStream keyStoreData = new FileInputStream(KEYSTORE_PATH)){
+            keyStore.load(keyStoreData, KEYSTORE_PASSWORD);
         }
          catch (FileNotFoundException e){
              e.printStackTrace();
@@ -46,46 +50,26 @@ public class Key {
         }
     }
 
-    static void storeKey(){
-        try (FileOutputStream keyStoreOutputStream = new FileOutputStream("tokens/keystore.jks")) {
-            keyStore.store(keyStoreOutputStream, keyStorePassword);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (CertificateException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (KeyStoreException e) {
-            e.printStackTrace();
-        }
-    }
-
-    static SecretKey getKey(String fileName) throws UnrecoverableEntryException, NoSuchAlgorithmException, KeyStoreException {
+    SecretKey getKey(String fileName) throws UnrecoverableEntryException, NoSuchAlgorithmException, KeyStoreException {
         KeyStore.ProtectionParameter entryPassword =
-                new KeyStore.PasswordProtection(keyStorePassword);
+                new KeyStore.PasswordProtection(KEYSTORE_PASSWORD);
 
         KeyStore.SecretKeyEntry keyEntry = (KeyStore.SecretKeyEntry)keyStore.getEntry(hash(fileName), entryPassword);
         return keyEntry.getSecretKey();
     }
 
-    static void setKey(SecretKey key, String fileName) throws KeyStoreException, NoSuchAlgorithmException {
+    void setKey(SecretKey key, String fileName) throws KeyStoreException, NoSuchAlgorithmException {
         KeyStore.ProtectionParameter entryPassword =
-                new KeyStore.PasswordProtection(keyStorePassword);
+                new KeyStore.PasswordProtection(KEYSTORE_PASSWORD);
 
         KeyStore.SecretKeyEntry secretKeyEntry = new KeyStore.SecretKeyEntry(key);
-
         keyStore.setEntry(hash(fileName), secretKeyEntry, entryPassword);
     }
 
-    static String hash(String fileName) throws NoSuchAlgorithmException {
-//        String sha256hex = DigestUtils.sha256Hex(fileName);
+    private static String hash(String fileName) throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] hash = digest.digest(
                 fileName.getBytes(StandardCharsets.UTF_8));
-        String sha256hex = new String(Hex.encode(hash));
-        //System.out.println("sha alias is:"+sha256hex);
-        return sha256hex;
+        return new String(Hex.encode(hash));
     }
 }

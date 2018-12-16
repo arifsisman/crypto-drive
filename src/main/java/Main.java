@@ -1,6 +1,4 @@
 import Crypto.CipherOps;
-import Crypto.Key;
-import Crypto.Provider;
 import Drive.DriveService;
 import Monitor.MonitorDirectory;
 
@@ -14,16 +12,10 @@ public class Main {
         //Drive Service initialization
         DriveService.initialize();
 
-        //Bouncy Castle provider for crypto operations
-        Provider.addProvider();
-
-        //Key Store initialization
-        Key.keyStoreInit();
-        Key.keyStoreLoad();
         //Cipher initialize for encryption/decryption operations
-        CipherOps.setCipherMode();
-        CipherOps.encrypt("C:\\Users\\musta\\IdeaProjects\\CryptoDrive\\src\\main\\resources\\files\\photo.jpg");
-        CipherOps.decrypt("C:\\Users\\musta\\IdeaProjects\\CryptoDrive\\src\\main\\resources\\files\\photo.jpg.enc");
+        CipherOps cipher = new CipherOps();
+        cipher.encrypt("C:\\Users\\musta\\IdeaProjects\\CryptoDrive\\src\\main\\resources\\files\\photo.jpg");
+        cipher.decrypt("C:\\Users\\musta\\IdeaProjects\\CryptoDrive\\src\\main\\resources\\files\\photo.jpg.enc");
 
 
         //Monitor the directory for changes
