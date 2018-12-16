@@ -14,6 +14,7 @@ import java.security.*;
 import java.security.cert.CertificateException;
 
 import static Drive.DriveService.folderId;
+import File.CDPaths;
 
 /**
  * @author Mustafa Sisman
@@ -56,7 +57,7 @@ public class CipherOps {
         cipher.init(Cipher.ENCRYPT_MODE, skeySpec, iv);
         byte[] plainText  = Files.readAllBytes(path);
         byte[] cipherText = cipher.doFinal(plainText);
-        toFile("C:\\Users\\musta\\IdeaProjects\\CryptoDrive\\src\\main\\resources\\files\\",path.getFileName()+".enc", cipherText);
+        toFile(CDPaths.CRYPTO_DRIVE_ENCRYPTED,path.getFileName()+".enc", cipherText);
         return cipherText;
     }
 
@@ -73,13 +74,13 @@ public class CipherOps {
         }
         byte[] cipherText  = Files.readAllBytes(path);
         byte[] plainText = cipher.doFinal(cipherText);
-        //FileUtils.writeByteArrayToFile(new File("C:\\Users\\musta\\IdeaProjects\\CryptoDrive\\src\\main\\resources\\files\\photo1.jpg"), cipherText);
         toFile("C:\\Users\\musta\\IdeaProjects\\CryptoDrive\\src\\main\\resources\\files\\"+"new", fileName, plainText);
+        //TODO remove new tag
         return plainText;
     }
 
     void toFile(String directory,String fileName,byte[] content) throws IOException {
-        FileUtils.writeByteArrayToFile(new File(directory+fileName), content);
+        FileUtils.writeByteArrayToFile(new File(directory+"\\"+fileName), content);
     }
 
 }

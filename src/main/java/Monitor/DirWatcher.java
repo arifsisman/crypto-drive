@@ -1,18 +1,29 @@
 package Monitor;
 
+import Crypto.CipherOps;
+import Drive.DriveService;
+import Drive.Upload;
+import File.CDPaths;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
 import java.io.IOException;
 import java.nio.file.*;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.sql.Time;
 import java.time.LocalTime;
 
 import static java.nio.file.StandardWatchEventKinds.*;
 
 public class DirWatcher implements Runnable {
-
     private final Path dir;
     private final WatchService watcher;
     private final WatchKey key;
-
+    private CipherOps cipher = new CipherOps();
     @SuppressWarnings("unchecked")
     static <T> WatchEvent<T> cast(WatchEvent<?> event) {
         return (WatchEvent<T>) event;
@@ -45,6 +56,8 @@ public class DirWatcher implements Runnable {
                     if (StandardWatchEventKinds.ENTRY_CREATE.equals(kind)){
                         //System.out.println(Time.valueOf(LocalTime.now())+" File Created:" + fileName);
                         //TODO trigger encrypt
+                        cipher.encrypt(dir.resolve(ev.context()).toString());
+                        Upload.toFolder(DriveService.folderId, CDPaths.CRYPTO_DRIVE_ENCRYPTED +"\\"+ev.context().getFileName()+".enc");
                     }
                     if (StandardWatchEventKinds.ENTRY_DELETE.equals(kind)){
 
@@ -61,6 +74,22 @@ public class DirWatcher implements Runnable {
             }
         } catch (InterruptedException x) {
             return;
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (BadPaddingException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        } catch (InvalidAlgorithmParameterException e) {
+            e.printStackTrace();
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (IllegalBlockSizeException e) {
+            e.printStackTrace();
+        } catch (CertificateException e) {
+            e.printStackTrace();
         }
     }
 }

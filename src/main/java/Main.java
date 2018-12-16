@@ -1,10 +1,8 @@
 import Crypto.CipherOps;
 import Drive.DriveService;
-import File.Zip;
+import File.CDPaths;
 import Monitor.DirWatcher;
 
-import java.awt.event.KeyEvent;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.security.GeneralSecurityException;
@@ -12,13 +10,11 @@ import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author Mustafa Sisman
  */
 public class Main {
-    public static String folderId;
     public static void main(String[] args) throws IOException, GeneralSecurityException, InterruptedException {
         //Drive Service initialization
         DriveService.initialize();
@@ -27,7 +23,7 @@ public class Main {
             public void run() {
                 DirWatcher watcher = null;
                 try {
-                    watcher = new DirWatcher(Path.of(System.getProperty("user.home")+"\\"+"CryptoDrive"));
+                    watcher = new DirWatcher(Path.of(CDPaths.CRYPTO_DRIVE_UPLOAD));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -40,18 +36,17 @@ public class Main {
 
         final String FILE_PATH = "C:\\Users\\musta\\IdeaProjects\\CryptoDrive\\src\\main\\resources\\files\\photo.jpg";
         final String FOLDER_PATH = "C:\\Users\\musta\\IdeaProjects\\CryptoDrive\\src\\main\\resources\\files\\Sunset Retro";
-
         //Cipher initialize for encryption/decryption operations
         CipherOps cipher = new CipherOps();
         //cipher.encrypt(FILE_PATH);
         //cipher.decrypt(FILE_PATH+".enc");
 
-        Zip zip = new Zip();
-        zip.generateFileList(new File(FOLDER_PATH));
-        zip.zipIt(FOLDER_PATH+".zip");
-
-        cipher.encrypt(FOLDER_PATH+".zip");
-        cipher.decrypt(FOLDER_PATH+".zip.enc");
+//        Zip zip = new Zip();
+//        zip.generateFileListAndZip(new File(FOLDER_PATH));
+//        zip.zipIt(FOLDER_PATH+".zip");
+//
+//        cipher.encrypt(FOLDER_PATH+".zip");
+//        cipher.decrypt(FOLDER_PATH+".zip.enc");
 
         //System.out.println("operation completed");
         t.join();
@@ -66,8 +61,7 @@ public class Main {
 //
 //        executor.awaitTermination(1, TimeUnit.SECONDS);
 //        executor.shutdownNow();
-        Scanner sc = new Scanner(System.in);
-        if(sc.nextInt()==0)
+        if(new Scanner(System.in).nextInt() == 0)
             System.exit(0);
 
         //Monitor the directory for changes
@@ -78,9 +72,8 @@ public class Main {
         //menu.MenuInit();
         //Search.searchFilesByName("cv");
 
-        //List.getFileList(10);
-        //Upload.uploadFile(Paths.get("src/main/resources/files/photo.jpg"));
-        //Upload.toFolder("1_RWxhLaZsBJdU9lxGu8vDGQUcHaEQN9P",Paths.get("src/main/resources/files/photo.jpg"));
+        //Upload.file("src/main/resources/files/photo.jpg");
+        //Upload.toFolder("1_RWxhLaZsBJdU9lxGu8vDGQUcHaEQN9P",File.CDPaths.get("src/main/resources/files/photo.jpg"));
 
 
         //List.getFileList(20);
@@ -88,7 +81,7 @@ public class Main {
         //Upload.file("src/main/resources/files/photo.jpg");
         //Download.listAndDownload(20);
         //Download.listItems(20);
-        //Folder.insert(folderId, Paths.get("src/main/resources/files/photo.jpg"));
+        //Folder.insert(folderId, File.CDPaths.get("src/main/resources/files/photo.jpg"));
         //Search.searchFiles(folderId);
     }
 

@@ -15,7 +15,6 @@ import java.util.zip.ZipOutputStream;
 public class Zip
 {
     List<String> fileList;
-    private static final String OUTPUT_ZIP_FILE = "C:\\Users\\musta\\IdeaProjects\\CryptoDrive\\src\\main\\resources\\files\\Sunset Retro.zip";
     private static final String SOURCE_FOLDER = "C:\\Users\\musta\\IdeaProjects\\CryptoDrive\\src\\main\\resources\\files\\Sunset Retro";
 
     public Zip(){
@@ -69,8 +68,7 @@ public class Zip
      * and add the file into fileList
      * @param node file or directory
      */
-    public void generateFileList(File node){
-
+    public void generateFileListAndZip(File node){
         //add file only
         if(node.isFile()){
             fileList.add(generateZipEntry(node.getAbsoluteFile().toString()));
@@ -79,7 +77,7 @@ public class Zip
         if(node.isDirectory()){
             String[] subNote = node.list();
             for(String filename : subNote){
-                generateFileList(new File(node, filename));
+                generateFileListAndZip(new File(node, filename));
             }
         }
     }
