@@ -32,7 +32,7 @@ public class Download {
         downloadFile(fileName, fileId);
     }
 
-    public static File downloadFile(String fileName, String fileId){
+    private static void downloadFile(String fileName, String fileId){
         try{
         FileOutputStream fos = null;
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -44,12 +44,12 @@ public class Download {
         } catch(IOException ioe) {
             ioe.printStackTrace();
         } finally {
+            assert fos != null;
             fos.close();
             System.out.println("Download finished.");}
         }
         catch(IOException e){
             System.out.println("An error occurred. Exception:"+e.getMessage());
         }
-        return new File();
     }
 }

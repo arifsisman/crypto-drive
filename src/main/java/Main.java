@@ -45,10 +45,10 @@ public class Main {
         //cipher.encrypt(FILE_PATH);
         //cipher.decrypt(CDPaths.CRYPTO_DRIVE_ENCRYPTED+"\\"+ Paths.get(FILE_PATH).getFileName()+".enc");
 
-//        Zip zip = new Zip();
-//        zip.generateFileList(new File(FOLDER_PATH),FOLDER_PATH);
-//        zip.zipIt(FOLDER_PATH+".zip",FOLDER_PATH);
-//        zip.unzipIt("C:\\Users\\musta\\IdeaProjects\\CryptoDrive\\src\\main\\resources\\files\\Sunset Retro.zip","C:\\Users\\musta\\IdeaProjects\\CryptoDrive\\src\\main\\resources\\files\\unzip");
+        Zip zip = new Zip();
+        zip.generateFileList(new File(FOLDER_PATH),FOLDER_PATH);
+        zip.zipIt(FOLDER_PATH+".zip",FOLDER_PATH);
+        zip.unzipIt("C:\\Users\\musta\\IdeaProjects\\CryptoDrive\\src\\main\\resources\\files\\Sunset Retro.zip","C:\\Users\\musta\\IdeaProjects\\CryptoDrive\\src\\main\\resources\\files\\unzip");
 
 //        cipher.encrypt(FOLDER_PATH+".zip");
 //        cipher.decrypt(FOLDER_PATH+".zip.enc");

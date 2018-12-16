@@ -40,7 +40,7 @@ public class CipherOps {
         Security.addProvider(new BouncyCastleProvider());
     }
 
-    public byte[] encrypt(String filePath) throws BadPaddingException, IllegalBlockSizeException, IOException, NoSuchAlgorithmException, InvalidKeyException, KeyStoreException, InvalidAlgorithmParameterException, CertificateException {
+    public void encrypt(String filePath) throws BadPaddingException, IllegalBlockSizeException, IOException, NoSuchAlgorithmException, InvalidKeyException, KeyStoreException, InvalidAlgorithmParameterException, CertificateException {
         Path path = Paths.get(filePath);
         SecretKey key = myKey.generateKey();
         myKey.setKey(key, FilenameUtils.getBaseName(filePath));
@@ -51,10 +51,9 @@ public class CipherOps {
         byte[] plainText  = Files.readAllBytes(path);
         byte[] cipherText = cipher.doFinal(plainText);
         toFile(CDPaths.CRYPTO_DRIVE_ENCRYPTED,path.getFileName()+".enc", cipherText);
-        return cipherText;
     }
 
-    public byte[] decrypt(String filePath) throws BadPaddingException, IllegalBlockSizeException, IOException, NoSuchAlgorithmException, InvalidKeyException, UnrecoverableEntryException, KeyStoreException{
+    public void decrypt(String filePath) throws BadPaddingException, IllegalBlockSizeException, IOException, NoSuchAlgorithmException, InvalidKeyException, UnrecoverableEntryException, KeyStoreException{
         Path path = Paths.get(filePath);
         String fileName = FilenameUtils.getBaseName(filePath);
         SecretKey key = myKey.getKey(FilenameUtils.getBaseName(fileName));
@@ -68,7 +67,6 @@ public class CipherOps {
         byte[] cipherText  = Files.readAllBytes(path);
         byte[] plainText = cipher.doFinal(cipherText);
         toFile(CDPaths.CRYPTO_DRIVE_DOWNLOAD, fileName, plainText);
-        return plainText;
     }
 
     private void toFile(String directory,String fileName,byte[] content) throws IOException {

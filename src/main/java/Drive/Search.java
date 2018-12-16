@@ -56,7 +56,7 @@ public class Search {
         }
     }
 
-    public static String searchFolder(String folderName){
+    static String searchFolder(String folderName){
         boolean hasFolder = false;
         String folderId = null;
         String pageToken = null;

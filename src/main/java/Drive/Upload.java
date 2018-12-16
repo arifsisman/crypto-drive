@@ -36,13 +36,12 @@ public class Upload {
         return null;
     }
 
-    public static String toFolder(String folderId, String filePath){
+    public static void toFolder(String folderId, String filePath){
         try{
             Path realPath = Paths.get(filePath);
             File fileMetadata = new File();
             fileMetadata.setName(realPath.getFileName().toString());
             fileMetadata.setParents(Collections.singletonList(folderId));
-            java.io.File fileObj = new java.io.File(filePath.toString());
             //Get mime type and fileName from path
             String mime = Files.probeContentType(realPath);
             FileContent mediaContent = new FileContent(mime, realPath.toFile());
@@ -50,10 +49,8 @@ public class Upload {
                     .setFields("id, parents")
                     .execute();
             System.out.println("Inserted file ID: " + file.getId());
-            return file.getId();
         }
         catch (IOException e){
             System.out.println("An error occurred while uploading file. "+e.getMessage());}
-        return null;
     }
 }

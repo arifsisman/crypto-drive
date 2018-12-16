@@ -15,11 +15,10 @@ import java.util.zip.ZipOutputStream;
 
 public class Zip
 {
-    List<String> fileList;
-    private static final String SOURCE_FOLDER = "C:\\Users\\musta\\IdeaProjects\\CryptoDrive\\src\\main\\resources\\files\\Sunset Retro";
+    private List<String> fileList;
 
     public Zip(){
-        fileList = new ArrayList<String>();
+        fileList = new ArrayList<>();
     }
 
     /**
@@ -56,6 +55,7 @@ public class Zip
         }
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public void unzipIt(String zipFilePath, String destDir) {
         File dir = new File(destDir);
         // create output directory if it doesn't exist
@@ -106,6 +106,7 @@ public class Zip
 
         if(node.isDirectory()){
             String[] subNote = node.list();
+            assert subNote != null;
             for(String filename : subNote){
                 generateFileList(new File(node, filename),destDir);
             }
@@ -118,6 +119,6 @@ public class Zip
      * @return Formatted file path
      */
     private String generateZipEntry(String file, String destDir){
-        return file.substring(destDir.length()+1, file.length());
+        return file.substring(destDir.length()+1);
     }
 }

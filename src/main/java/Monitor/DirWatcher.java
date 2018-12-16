@@ -25,7 +25,7 @@ public class DirWatcher implements Runnable {
     private final WatchKey key;
     private CipherOps cipher = new CipherOps();
     @SuppressWarnings("unchecked")
-    static <T> WatchEvent<T> cast(WatchEvent<?> event) {
+    private static <T> WatchEvent<T> cast(WatchEvent<?> event) {
         return (WatchEvent<T>) event;
     }
 
@@ -60,10 +60,10 @@ public class DirWatcher implements Runnable {
                         Upload.toFolder(DriveService.folderId, CDPaths.CRYPTO_DRIVE_ENCRYPTED +"\\"+ev.context().getFileName()+".enc");
                     }
                     if (StandardWatchEventKinds.ENTRY_DELETE.equals(kind)){
-
+                        System.out.println("hello");
                     }
                     if (StandardWatchEventKinds.ENTRY_MODIFY.equals(kind)){
-
+                        System.out.println("hello");
                     }
                 }
 
@@ -72,23 +72,8 @@ public class DirWatcher implements Runnable {
                     break;
                 }
             }
-        } catch (InterruptedException x) {
-            return;
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (BadPaddingException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (InvalidAlgorithmParameterException e) {
-            e.printStackTrace();
-        } catch (KeyStoreException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
-        } catch (CertificateException e) {
+        }catch (NoSuchAlgorithmException | BadPaddingException | InvalidKeyException | InvalidAlgorithmParameterException |
+                IOException | IllegalBlockSizeException | CertificateException | InterruptedException | KeyStoreException e) {
             e.printStackTrace();
         }
     }

@@ -60,16 +60,15 @@ public class DriveService {
         return service;
     }
 
-    private static String hasFolder(String folderName){
+    private static void hasFolder(String folderName){
         folderId = Search.searchFolder(folderName);
         if(folderId == null){
             //if there  is no folder named "CryptoDrive" then create new folder.
-            Folder.create("CryptoDrive");
+            Folder.create();
             folderId = Search.searchFolder(folderName);
         }
         else
             System.out.println(folderName+" is using as main folder.");
-        return folderId;
     }
 
 }

@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class Directory {
     private static ArrayList<Path> pathList = new ArrayList<>();
-    public static boolean checkDirectory() throws IOException {
+    public static void checkDirectory() throws IOException {
         Path cryptoFolderPath = Path.of(CDPaths.CRYPTO_DRIVE);
         pathList.add(Path.of(CDPaths.CRYPTO_DRIVE_UPLOAD));
         pathList.add(Path.of(CDPaths.CRYPTO_DRIVE_DOWNLOAD));
@@ -33,7 +33,6 @@ public class Directory {
             createFolder(cryptoFolderPath);
             checkDirectory();
         }
-        return true;
     }
 
     private static void createFolder(Path path) throws IOException {

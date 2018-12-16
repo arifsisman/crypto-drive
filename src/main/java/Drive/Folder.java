@@ -9,10 +9,10 @@ import static Drive.DriveService.service;
 /**
  * @author Mustafa Sisman
  */
-public class Folder {
-    public static String create(String folderName){
+class Folder {
+    static void create(){
         File fileMetadata = new File();
-        fileMetadata.setName(folderName);
+        fileMetadata.setName("CryptoDrive");
         fileMetadata.setMimeType("application/vnd.google-apps.folder");
         File file = null;
         try {
@@ -22,7 +22,7 @@ public class Folder {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        assert file != null;
         System.out.println("Created folder ID: " + file.getId());
-        return file.getId();
     }
 }

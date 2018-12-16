@@ -12,12 +12,13 @@ import java.security.cert.CertificateException;
 /**
  * @author Mustafa Sisman
  */
-public class Key {
+class Key {
     private final String KEYSTORE_PATH = "tokens/keystore.jks";
     private final char[] KEYSTORE_PASSWORD = "CryptoDrive".toCharArray();
-    static KeyStore keyStore;
+    private static KeyStore keyStore;
 
-    public Key() throws KeyStoreException, IOException {
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    Key() throws KeyStoreException, IOException {
         keyStore = KeyStore.getInstance("JCEKS");
         File f = new File(KEYSTORE_PATH);
         if(!f.exists()){
@@ -30,8 +31,7 @@ public class Key {
     SecretKey generateKey() throws NoSuchAlgorithmException {
         KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
         keyGenerator.init(256, new SecureRandom());
-        SecretKey secretKey = keyGenerator.generateKey();
-        return secretKey;
+        return keyGenerator.generateKey();
     }
 
     void storeKey() throws IOException, CertificateException, NoSuchAlgorithmException, KeyStoreException {
@@ -44,11 +44,9 @@ public class Key {
         try(InputStream keyStoreData = new FileInputStream(KEYSTORE_PATH)){
             keyStore.load(keyStoreData, KEYSTORE_PASSWORD);
         }
-         catch (FileNotFoundException e){
+         catch (FileNotFoundException | NoSuchAlgorithmException | CertificateException e){
              e.printStackTrace();
-        }catch (NoSuchAlgorithmException | CertificateException e){
-            e.printStackTrace();
-        }catch (IOException e) {
+        } catch (IOException e) {
             System.out.println("KeyStore file created.");
         }
     }

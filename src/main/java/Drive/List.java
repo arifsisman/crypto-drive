@@ -11,7 +11,7 @@ import static Drive.DriveService.service;
  * @author Mustafa Sisman
  */
 public class List {
-    public static java.util.List<File> listFiles(int size){
+    static java.util.List<File> listFiles(int size){
         int counter = 0;
         // Print the file names and IDs.
         FileList result = null;
@@ -24,6 +24,7 @@ public class List {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        assert result != null;
         java.util.List<File> files = result.getFiles();
         if (files == null || files.isEmpty()) {
             System.out.println("No files found.");
@@ -50,6 +51,7 @@ public class List {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        assert result != null;
         java.util.List<File> files = result.getFiles();
         if (files == null || files.isEmpty()) {
             System.out.println("No folders found.");
