@@ -15,6 +15,9 @@ import java.security.cert.CertificateException;
 
 import static Drive.DriveService.folderId;
 
+/**
+ * @author Mustafa Sisman
+ */
 public class CipherOps {
     private static final String initVector = folderId.substring(0,16);
     private static byte[] initVecBytes;

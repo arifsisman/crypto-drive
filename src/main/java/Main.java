@@ -5,7 +5,9 @@ import Monitor.MonitorDirectory;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
-
+/**
+ * @author Mustafa Sisman
+ */
 public class Main {
     public static String folderId;
     public static void main(String[] args) throws IOException, GeneralSecurityException, InterruptedException {
@@ -19,7 +21,7 @@ public class Main {
 
 
         //Monitor the directory for changes
-        //MonitorDirectory.listen();
+        MonitorDirectory.listen();
 
 
 

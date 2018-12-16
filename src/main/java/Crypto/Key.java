@@ -9,6 +9,9 @@ import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.cert.CertificateException;
 
+/**
+ * @author Mustafa Sisman
+ */
 public class Key {
     private final String KEYSTORE_PATH = "tokens/keystore.jks";
     private final char[] KEYSTORE_PASSWORD = "CryptoDrive".toCharArray();
