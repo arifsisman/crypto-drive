@@ -2,6 +2,7 @@ package Crypto;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import java.nio.charset.StandardCharsets;
 
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
@@ -27,17 +28,9 @@ public class CipherOps {
     static {
         try {
             cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-            initVecBytes = initVector.getBytes("UTF-8");
+            initVecBytes = initVector.getBytes(StandardCharsets.UTF_8.name());
             myKey = new Key();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (KeyStoreException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException | KeyStoreException | IOException e) {
             e.printStackTrace();
         }
     }
@@ -74,13 +67,11 @@ public class CipherOps {
         }
         byte[] cipherText  = Files.readAllBytes(path);
         byte[] plainText = cipher.doFinal(cipherText);
-        toFile("C:\\Users\\musta\\IdeaProjects\\CryptoDrive\\src\\main\\resources\\files\\", "new"+fileName, plainText);
-        //TODO change file path to variable and remove new tag
+        toFile(CDPaths.CRYPTO_DRIVE_DOWNLOAD, fileName, plainText);
         return plainText;
     }
 
-    void toFile(String directory,String fileName,byte[] content) throws IOException {
-        //FileUtils.writeByteArrayToFile(new File(directory+"\\"+fileName), content);
+    private void toFile(String directory,String fileName,byte[] content) throws IOException {
         FileUtils.writeByteArrayToFile(new File(directory+ File.separator +fileName), content);
     }
 

@@ -27,7 +27,7 @@ public class DriveService {
 
     private static final java.util.Collection<String> SCOPES = DriveScopes.all();
     private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
-    public static com.google.api.services.drive.Drive service;
+    private static com.google.api.services.drive.Drive service;
     public static String folderId;
     /**
      * Creates an authorized Credential object.
@@ -60,9 +60,10 @@ public class DriveService {
         return service;
     }
 
-    public static String hasFolder(String folderName){
+    private static String hasFolder(String folderName){
         folderId = Search.searchFolder(folderName);
-        if(folderId == null){//if there  is no folder named "CryptoDrive" then create new folder.
+        if(folderId == null){
+            //if there  is no folder named "CryptoDrive" then create new folder.
             Folder.create("CryptoDrive");
             folderId = Search.searchFolder(folderName);
         }

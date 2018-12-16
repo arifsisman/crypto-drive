@@ -3,7 +3,11 @@ import Drive.DriveService;
 import File.CDPaths;
 import File.Zip;
 import Monitor.DirWatcher;
+import Monitor.Directory;
+import org.apache.http.annotation.NotThreadSafe;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.io.File;
@@ -18,43 +22,46 @@ import java.util.concurrent.Future;
  * @author Mustafa Sisman
  */
 public class Main {
+    private static Thread t;
+    private static Future<?> future;
+    private static DirWatcher watcher;
+    static {
+        try {
+            watcher = new DirWatcher(Path.of(CDPaths.CRYPTO_DRIVE_UPLOAD));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) throws IOException, GeneralSecurityException, InterruptedException {
         //Drive Service initialization
         DriveService.initialize();
-//
-//        Thread t = new Thread() {
-//            public void run() {
-//                DirWatcher watcher = null;
-//                try {
-//                    watcher = new DirWatcher(Path.of(CDPaths.CRYPTO_DRIVE_UPLOAD));
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//                ExecutorService executor = Executors.newSingleThreadExecutor();
-//                Future<?> future = executor.submit(watcher);
-//                executor.shutdown();
-//            }
-//        };
-//        t.start();
+
+        //Check local CryptoDrive directory exists, if not create
+        Directory.checkDirectory();
+
+        //Cipher initialize for encryption/decryption operations
+        CipherOps cipher = new CipherOps();
+
+        //Call monitor thread
+        threadMethod();
+        t.start();
 
         final String FILE_PATH = "C:\\Users\\musta\\IdeaProjects\\CryptoDrive\\src\\main\\resources\\files\\photo.jpg";
         final String FOLDER_PATH = "C:\\Users\\musta\\IdeaProjects\\CryptoDrive\\src\\main\\resources\\files\\Sunset Retro";
-        //Cipher initialize for encryption/decryption operations
-        CipherOps cipher = new CipherOps();
+
         //cipher.encrypt(FILE_PATH);
         //cipher.decrypt(CDPaths.CRYPTO_DRIVE_ENCRYPTED+"\\"+ Paths.get(FILE_PATH).getFileName()+".enc");
 
-        Zip zip = new Zip();
-        zip.generateFileList(new File(FOLDER_PATH),FOLDER_PATH);
-        zip.zipIt(FOLDER_PATH+".zip",FOLDER_PATH);
-        zip.unzipIt("C:\\Users\\musta\\IdeaProjects\\CryptoDrive\\src\\main\\resources\\files\\Sunset Retro.zip","C:\\Users\\musta\\IdeaProjects\\CryptoDrive\\src\\main\\resources\\files\\unzip");
-        //C:\Users\musta\IdeaProjects\CryptoDrive\src\main\resources\files\Sunset Retro.zip
-//
+//        Zip zip = new Zip();
+//        zip.generateFileList(new File(FOLDER_PATH),FOLDER_PATH);
+//        zip.zipIt(FOLDER_PATH+".zip",FOLDER_PATH);
+//        zip.unzipIt("C:\\Users\\musta\\IdeaProjects\\CryptoDrive\\src\\main\\resources\\files\\Sunset Retro.zip","C:\\Users\\musta\\IdeaProjects\\CryptoDrive\\src\\main\\resources\\files\\unzip");
+
 //        cipher.encrypt(FOLDER_PATH+".zip");
 //        cipher.decrypt(FOLDER_PATH+".zip.enc");
 
-        //System.out.println("operation completed");
-        //t.join();
+
 
         // Now, the watcher runs in parallel
         // Do other stuff here
@@ -66,8 +73,11 @@ public class Main {
 //
 //        executor.awaitTermination(1, TimeUnit.SECONDS);
 //        executor.shutdownNow();
-        if(new Scanner(System.in).nextInt() == 0)
+        if(new Scanner(System.in).nextInt() == 0){
+            t.join();
+            future.cancel(true);
             System.exit(0);
+        }
 
         //Monitor the directory for changes
         //MonitorDirectory.listen();
@@ -88,6 +98,16 @@ public class Main {
         //Download.listItems(20);
         //Folder.insert(folderId, File.CDPaths.get("src/main/resources/files/photo.jpg"));
         //Search.searchFiles(folderId);
+    }
+
+    private static void threadMethod(){
+        t = new Thread(()->{}) {
+            public void run() {
+                ExecutorService executor = Executors.newSingleThreadExecutor();
+                future = executor.submit(watcher);
+                executor.shutdown();
+            }
+        };
     }
 
 }
