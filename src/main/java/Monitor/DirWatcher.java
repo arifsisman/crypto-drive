@@ -40,11 +40,11 @@ public class DirWatcher implements Runnable {
 
                 for (WatchEvent<?> event : key.pollEvents()) {
                     WatchEvent<Path> ev = cast(event);
-                    System.out.format("%s: %s\n", ev.kind(), dir.resolve(ev.context()));
-                    // TODO: handle event. E.g. call listeners
+                    System.out.format("%s %s: %s\n",Time.valueOf(LocalTime.now()), ev.kind(), dir.resolve(ev.context()));
                     WatchEvent.Kind kind = event.kind();
                     if (StandardWatchEventKinds.ENTRY_CREATE.equals(kind)){
-
+                        //System.out.println(Time.valueOf(LocalTime.now())+" File Created:" + fileName);
+                        //TODO trigger encrypt
                     }
                     if (StandardWatchEventKinds.ENTRY_DELETE.equals(kind)){
 

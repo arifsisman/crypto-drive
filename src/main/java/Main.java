@@ -1,10 +1,14 @@
 import Crypto.CipherOps;
 import Drive.DriveService;
+import File.Zip;
 import Monitor.DirWatcher;
 
+import java.awt.event.KeyEvent;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.security.GeneralSecurityException;
+import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -23,7 +27,7 @@ public class Main {
             public void run() {
                 DirWatcher watcher = null;
                 try {
-                    watcher = new DirWatcher(Path.of("C:\\Users\\musta\\Documents\\CryptoDrive"));
+                    watcher = new DirWatcher(Path.of(System.getProperty("user.home")+"\\"+"CryptoDrive"));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -34,12 +38,23 @@ public class Main {
         };
         t.start();
 
+        final String FILE_PATH = "C:\\Users\\musta\\IdeaProjects\\CryptoDrive\\src\\main\\resources\\files\\photo.jpg";
+        final String FOLDER_PATH = "C:\\Users\\musta\\IdeaProjects\\CryptoDrive\\src\\main\\resources\\files\\Sunset Retro";
+
         //Cipher initialize for encryption/decryption operations
         CipherOps cipher = new CipherOps();
-        cipher.encrypt("C:\\Users\\musta\\IdeaProjects\\CryptoDrive\\src\\main\\resources\\files\\photo.jpg");
-        cipher.decrypt("C:\\Users\\musta\\IdeaProjects\\CryptoDrive\\src\\main\\resources\\files\\photo.jpg.enc");
+        //cipher.encrypt(FILE_PATH);
+        //cipher.decrypt(FILE_PATH+".enc");
+
+        Zip zip = new Zip();
+        zip.generateFileList(new File(FOLDER_PATH));
+        zip.zipIt(FOLDER_PATH+".zip");
+
+        cipher.encrypt(FOLDER_PATH+".zip");
+        cipher.decrypt(FOLDER_PATH+".zip.enc");
 
         //System.out.println("operation completed");
+        t.join();
 
         // Now, the watcher runs in parallel
         // Do other stuff here
@@ -51,7 +66,9 @@ public class Main {
 //
 //        executor.awaitTermination(1, TimeUnit.SECONDS);
 //        executor.shutdownNow();
-
+        Scanner sc = new Scanner(System.in);
+        if(sc.nextInt()==0)
+            System.exit(0);
 
         //Monitor the directory for changes
         //MonitorDirectory.listen();
