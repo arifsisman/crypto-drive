@@ -70,12 +70,10 @@ public class Search {
                     .setPageToken(pageToken)
                     .execute();
             for (File file : result.getFiles()) {
-                //CryptoDrive folder found
                 if(!hasFolder){
                     hasFolder = true;
                     folderId=file.getId();}
-                System.out.printf("Found folder: %s (%s)\n",
-                        file.getName(), file.getId());
+                    System.out.printf("Found folder: %s (%s)\n", file.getName(), file.getId());
             }
             pageToken = result.getNextPageToken();
         } while (pageToken != null);}

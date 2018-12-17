@@ -10,7 +10,7 @@ import static Drive.DriveService.service;
  * @author Mustafa Sisman
  */
 class Folder {
-    static void create(){
+    static void createMainFolder(){
         File fileMetadata = new File();
         fileMetadata.setName("CryptoDrive");
         fileMetadata.setMimeType("application/vnd.google-apps.folder");

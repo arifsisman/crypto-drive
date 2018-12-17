@@ -27,10 +27,11 @@ public class Zip
      */
     public void zipIt(String zipFilePath, String destDir){
         byte[] buffer = new byte[1024];
+        zipFilePath+=".zip";
         try{
             FileOutputStream fos = new FileOutputStream(zipFilePath);
             ZipOutputStream zos = new ZipOutputStream(fos);
-            System.out.println("Output to Zip : " + zipFilePath);
+            System.out.println("Output to Zip: " + zipFilePath);
 
             for(String file : this.fileList){
                 System.out.println("File Added : " + file);
@@ -48,8 +49,6 @@ public class Zip
             zos.closeEntry();
             //remember close it
             zos.close();
-
-            System.out.println("Zip completed.");
         }catch(IOException ex){
             ex.printStackTrace();
         }

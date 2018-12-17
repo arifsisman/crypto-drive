@@ -20,10 +20,9 @@ public class Directory {
         pathList.add(Path.of(CDPaths.CRYPTO_DRIVE_ENCRYPTED));
 
         if(Files.exists(cryptoFolderPath)){
-            System.out.println(CDPaths.home+"\\CryptoDrive"+" folder found at home directory.");
             for(Path p : pathList)
             if(Files.exists(p)){
-                System.out.println(p.getFileName()+" folder found at CryptoDrive directory.");
+                System.out.println(p.getFileName()+" folder is using at "+cryptoFolderPath);
             }
             else{
                 createFolder(p);
@@ -37,12 +36,8 @@ public class Directory {
 
     private static void createFolder(Path path) throws IOException {
         File f = new File(path.toUri());
-        if (!f.mkdir()) {
-            System.out.println("Can not create directory.");
-        }
-        if (!f.createNewFile()) {
-            System.out.println("Can not create a new file.");
-        }
-        System.out.println(f.getName()+" created at "+f.getAbsolutePath());
+        f.mkdir();
+        f.createNewFile();
+        //System.out.println(f.getName()+" created at "+f.getAbsolutePath());
     }
 }

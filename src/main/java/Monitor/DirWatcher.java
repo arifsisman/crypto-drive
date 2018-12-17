@@ -4,9 +4,11 @@ import Crypto.CipherOps;
 import Drive.DriveService;
 import Drive.Upload;
 import File.CDPaths;
+import File.Zip;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
 import java.security.InvalidAlgorithmParameterException;
@@ -51,13 +53,23 @@ public class DirWatcher implements Runnable {
 
                 for (WatchEvent<?> event : key.pollEvents()) {
                     WatchEvent<Path> ev = cast(event);
-                    System.out.format("%s %s: %s\n",Time.valueOf(LocalTime.now()), ev.kind(), dir.resolve(ev.context()));
+                    System.out.format("%s %s: %s\n", Time.valueOf(LocalTime.now()), ev.kind(), dir.resolve(ev.context()));
                     WatchEvent.Kind kind = event.kind();
                     if (StandardWatchEventKinds.ENTRY_CREATE.equals(kind)){
-                        //System.out.println(Time.valueOf(LocalTime.now())+" File Created:" + fileName);
-                        //TODO trigger encrypt
-                        cipher.encrypt(dir.resolve(ev.context()).toString());
-                        Upload.toFolder(DriveService.folderId, CDPaths.CRYPTO_DRIVE_ENCRYPTED +"\\"+ev.context().getFileName()+".enc");
+                        if(dir.resolve(ev.context()).toFile().isFile()){
+                            cipher.encrypt(dir.resolve(ev.context()).toString());
+                            Upload.toFolder(DriveService.folderId, CDPaths.CRYPTO_DRIVE_ENCRYPTED + File.separator +ev.context().getFileName()+".enc");
+                        }
+                        else{
+                            String folderPath = CDPaths.CRYPTO_DRIVE_UPLOAD+File.separator+ev.context().toString();
+                            String encZipFolderPath = CDPaths.CRYPTO_DRIVE_ENCRYPTED + File.separator +ev.context().getFileName()+".zip.enc";
+                            Zip zip = new Zip();
+                            zip.generateFileList(new File(folderPath),folderPath);
+                            zip.zipIt(folderPath, folderPath);
+                            cipher.encrypt(folderPath+".zip");
+                            //Note to myself-> This method call is not needed because polling thread detects and uploads the .zip file already!
+                            //Upload.toFolder(DriveService.folderId, encZipFolderPath);
+                        }
                     }
                     if (StandardWatchEventKinds.ENTRY_DELETE.equals(kind)){
                         System.out.println("hello");
