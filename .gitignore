@@ -9,10 +9,10 @@
 .idea/**/dictionaries
 .idea/**/shelf
 /out/
-# *.iml
-# modules.xml
-# .idea/misc.xml
-# *.ipr
+*.iml
+*.ipr
+modules.xml
+.idea/misc.xml
 
 # Generated files
 .idea/**/contentModel.xml
