@@ -105,9 +105,8 @@ modules.xml
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
-### Sonar ###
-#Sonar generated dir
-/.sonar/
+# Sonarlint plugin
+.idea/sonarlint
 
 ### Gradle ###
 .gradle
@@ -127,5 +126,9 @@ gradle-app.setting
 
 ### Gradle Patch ###
 **/build/
+
+# Ignore credentials and tokens
+credentials.json
+tokens/
 
 # End of https://www.gitignore.io/api/java,sonar,gradle,intellij+iml
