@@ -62,7 +62,6 @@ public class DirWatcher implements Runnable {
                         }
                         else{
                             String folderPath = CDPaths.CRYPTO_DRIVE_UPLOAD+File.separator+ev.context().toString();
-                            String encZipFolderPath = CDPaths.CRYPTO_DRIVE_ENCRYPTED + File.separator +ev.context().getFileName()+".zip.enc";
                             Zip zip = new Zip();
                             zip.generateFileList(new File(folderPath),folderPath);
                             zip.zipIt(folderPath, folderPath);
