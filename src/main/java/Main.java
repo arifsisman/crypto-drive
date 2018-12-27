@@ -1,5 +1,6 @@
 import Drive.DriveService;
 import File.CDPaths;
+import Menu.SimpleMenu;
 import Monitor.DirWatcher;
 import Monitor.Directory;
 
@@ -7,7 +8,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.security.GeneralSecurityException;
 import java.util.Objects;
-import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -18,6 +18,7 @@ import java.util.concurrent.Future;
 public class Main {
     private static Thread t;
     private static Future<?> future;
+    static SimpleMenu menu;
     public static void main(String[] args) throws IOException, GeneralSecurityException, InterruptedException {
         //Drive Service initialization
         DriveService.initialize();
@@ -29,11 +30,15 @@ public class Main {
         threadMethod();
         t.start();
 
-        if(new Scanner(System.in).nextInt() == 0){
-            t.join();
-            future.cancel(true);
-            System.exit(0);
-        }
+        //Init and display menu
+        menu = new SimpleMenu();
+        menu.listen();
+
+//        if(new Scanner(System.in).nextInt() == 0){
+//            t.join();
+//            future.cancel(true);
+//            System.exit(0);
+//        }
     }
 
     private static void threadMethod(){
