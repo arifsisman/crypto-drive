@@ -2,8 +2,11 @@ package Menu;
 
 import Crypto.CipherOps;
 import Drive.Download;
+import Drive.DriveService;
 import File.CDPaths;
 import File.Zip;
+import Monitor.Directory;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
 import javax.crypto.BadPaddingException;
@@ -50,7 +53,7 @@ public class SimpleMenu {
         itemList.add(new Item("1","Upload"));
         itemList.add(new Item("2","Download"));
         itemList.add(new Item("3","Delete Local Files"));
-        itemList.add(new Item("3","Delete Remote Files"));
+        itemList.add(new Item("4","Delete Remote Files"));
         itemList.add(new Item("5","Exit"));
     }
 
@@ -90,6 +93,17 @@ public class SimpleMenu {
                     }
                     break;
                 case 3:
+                    System.out.println("Do you want to delete local files ? <y/n>");
+                    if(s.next().charAt(0)=='y'){
+                        FileUtils.deleteDirectory(new File(CDPaths.CRYPTO_DRIVE));
+                        Directory.checkDirectory();
+                    }
+                    break;
+                case 4:
+                    System.out.println("Do you want to delete remote files ? <y/n>");
+                    if(s.next().charAt(0)=='y'){
+                    DriveService.service.files().delete(DriveService.folderId).execute();
+                    DriveService.hasFolder("CryptoDrive");}
                     break;
                 case 5:
                     System.exit(0);

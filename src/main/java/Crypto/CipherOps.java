@@ -30,7 +30,7 @@ public class CipherOps {
             cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             initVecBytes = initVector.getBytes(StandardCharsets.UTF_8.name());
             myKey = new Key();
-        } catch (NoSuchAlgorithmException | NoSuchPaddingException | KeyStoreException | IOException e) {
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException | KeyStoreException | IOException | CertificateException e) {
             e.printStackTrace();
         }
     }

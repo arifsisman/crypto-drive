@@ -17,15 +17,16 @@ class Key {
     private final char[] KEYSTORE_PASSWORD = "CryptoDrive".toCharArray();
     private static KeyStore keyStore;
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
-    Key() throws KeyStoreException, IOException {
+    Key() throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException {
         keyStore = KeyStore.getInstance("JCEKS");
         File f = new File(KEYSTORE_PATH);
         if(!f.exists()){
             f.getParentFile().mkdir();
             f.createNewFile();
+            keyStore.load(null, KEYSTORE_PASSWORD);
         }
-        loadKey();
+        else
+            keyStore.load(new FileInputStream(KEYSTORE_PATH), KEYSTORE_PASSWORD);
     }
 
     SecretKey generateKey() throws NoSuchAlgorithmException {
@@ -37,17 +38,6 @@ class Key {
     void storeKey() throws IOException, CertificateException, NoSuchAlgorithmException, KeyStoreException {
         try (FileOutputStream keyStoreOutputStream = new FileOutputStream(KEYSTORE_PATH)) {
             keyStore.store(keyStoreOutputStream, KEYSTORE_PASSWORD);
-        }
-    }
-
-    private void loadKey(){
-        try(InputStream keyStoreData = new FileInputStream(KEYSTORE_PATH)){
-            keyStore.load(keyStoreData, KEYSTORE_PASSWORD);
-        }
-         catch (FileNotFoundException | NoSuchAlgorithmException | CertificateException e){
-             e.printStackTrace();
-        } catch (IOException e) {
-            System.out.println("KeyStore file created.");
         }
     }
 
