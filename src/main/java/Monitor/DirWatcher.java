@@ -5,6 +5,7 @@ import Drive.DriveService;
 import Drive.Upload;
 import File.CDPaths;
 import File.Zip;
+import Menu.SimpleMenu;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -59,9 +60,10 @@ public class DirWatcher implements Runnable {
                         if(dir.resolve(ev.context()).toFile().isFile()){
                             cipher.encrypt(dir.resolve(ev.context()).toString());
                             Upload.toFolder(DriveService.folderId, CDPaths.CRYPTO_DRIVE_ENCRYPTED + File.separator +ev.context().getFileName()+".enc");
+                            SimpleMenu.display();
                         }
                         else{
-                            String folderPath = CDPaths.CRYPTO_DRIVE_UPLOAD+File.separator+ev.context().toString();
+                            String folderPath = CDPaths.CRYPTO_DRIVE_UPLOAD+File.separator+ev.context();
                             Zip zip = new Zip();
                             zip.generateFileList(new File(folderPath),folderPath);
                             zip.zipIt(folderPath, folderPath);
@@ -71,10 +73,8 @@ public class DirWatcher implements Runnable {
                         }
                     }
                     if (StandardWatchEventKinds.ENTRY_DELETE.equals(kind)){
-                        System.out.println("hello");
                     }
                     if (StandardWatchEventKinds.ENTRY_MODIFY.equals(kind)){
-                        System.out.println("hello");
                     }
                 }
 

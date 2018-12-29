@@ -55,7 +55,7 @@ public class Zip
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public void unzipIt(String zipFilePath, String destDir) {
+    public static void unzipIt(String zipFilePath, String destDir) {
         File dir = new File(destDir);
         // create output directory if it doesn't exist
         if(!dir.exists()) dir.mkdirs();

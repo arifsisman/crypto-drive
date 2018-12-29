@@ -15,7 +15,7 @@ import File.CDPaths;
  * @author Mustafa Sisman
  */
 public class Download {
-    public static void listAndDownload(int listSize) throws IOException{
+    public static String listAndDownload(int listSize) throws IOException{
         int index = -2;
         Scanner sc = new Scanner(System.in);
         java.util.List<File> files = List.listFiles(listSize);
@@ -33,24 +33,25 @@ public class Download {
         String fileName = files.get(index-1).getName();
         System.out.println(fileName+" is downloading.");
         downloadFile(fileName, fileId);
+        return fileName;
     }
 
     private static void downloadFile(String fileName, String fileId){
         try{
-        FileOutputStream fos = null;
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        service.files().get(fileId)
-                .executeMediaAndDownloadTo(outputStream);
-        try {
-            fos = new FileOutputStream(new java.io.File( CDPaths.CRYPTO_DRIVE_ENCRYPTED + java.io.File.separator + fileName));
-            outputStream.writeTo(fos);
-        } catch(IOException ioe) {
-            ioe.printStackTrace();
-        } finally {
-            assert fos != null;
-            fos.close();
-            System.out.println("Download finished.");
-        }
+            FileOutputStream fos = null;
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            service.files().get(fileId)
+                    .executeMediaAndDownloadTo(outputStream);
+            try {
+                fos = new FileOutputStream(new java.io.File( CDPaths.CRYPTO_DRIVE_ENCRYPTED + java.io.File.separator + fileName));
+                outputStream.writeTo(fos);
+            } catch(IOException ioe) {
+                ioe.printStackTrace();
+            } finally {
+                assert fos != null;
+                fos.close();
+                System.out.println("Download finished.");
+            }
         }
         catch(IOException e){
             System.out.println("An error occurred. Exception:"+e.getMessage());
