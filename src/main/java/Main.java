@@ -18,7 +18,7 @@ public class Main {
     private static Thread t;
     private static Future<?> future;
     static SimpleMenu menu;
-    public static void main(String[] args) throws IOException, GeneralSecurityException{
+    public static void main(String[] args) throws IOException, GeneralSecurityException, InterruptedException {
         //Drive Service initialization
         DriveService.initialize();
 
@@ -33,6 +33,8 @@ public class Main {
         menu = new SimpleMenu();
         menu.listen();
 
+        t.join();
+        future.cancel(true);
     }
 
     private static void threadMethod(){

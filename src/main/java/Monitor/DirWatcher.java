@@ -21,6 +21,8 @@ import java.sql.Time;
 import java.time.LocalTime;
 
 import static java.nio.file.StandardWatchEventKinds.*;
+import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.awaitility.Awaitility.await;
 
 public class DirWatcher implements Runnable {
     private final Path dir;
@@ -65,7 +67,8 @@ public class DirWatcher implements Runnable {
                         else{
                             String folderPath = CDPaths.CRYPTO_DRIVE_UPLOAD+File.separator+ev.context();
                             Zip zip = new Zip();
-                            zip.generateFileList(new File(folderPath),folderPath);
+                            //wait thread to complete generate file lists for folder
+                            await().atMost(10, SECONDS).until(() -> zip.generateFileListHelper(new File(folderPath),folderPath));
                             zip.zipIt(folderPath, folderPath);
                             cipher.encrypt(folderPath+".zip");
                             //Note to myself-> This method call is not needed because polling thread detects and uploads the .zip file already!

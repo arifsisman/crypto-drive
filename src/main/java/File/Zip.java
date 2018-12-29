@@ -55,7 +55,7 @@ public class Zip
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public static void unzipIt(String zipFilePath, String destDir) {
+    public void unzipIt(String zipFilePath, String destDir) {
         File dir = new File(destDir);
         // create output directory if it doesn't exist
         if(!dir.exists()) dir.mkdirs();
@@ -90,6 +90,11 @@ public class Zip
             e.printStackTrace();
         }
 
+    }
+
+    public boolean generateFileListHelper(File node, String destDir){
+        generateFileList(node, destDir);
+        return true;
     }
 
     /**

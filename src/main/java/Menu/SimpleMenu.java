@@ -83,7 +83,8 @@ public class SimpleMenu {
                         raf.close();
                         //if zip file
                         if (n == 0x504B0304){
-                            Zip.unzipIt(filePath,CDPaths.CRYPTO_DRIVE_DOWNLOAD + File.separator + FilenameUtils.getBaseName(FilenameUtils.getBaseName(fileName)));
+                            Zip z = new Zip();
+                            z.unzipIt(filePath,CDPaths.CRYPTO_DRIVE_DOWNLOAD + File.separator + FilenameUtils.getBaseName(FilenameUtils.getBaseName(fileName)));
                             //delete temp .zip
                             new File(filePath).delete();
                         }
@@ -96,14 +97,16 @@ public class SimpleMenu {
                     System.out.println("Do you want to delete local files ? <y/n>");
                     if(s.next().charAt(0)=='y'){
                         FileUtils.deleteDirectory(new File(CDPaths.CRYPTO_DRIVE));
+                        System.out.println("Local files deleted.");
                         Directory.checkDirectory();
                     }
                     break;
                 case 4:
                     System.out.println("Do you want to delete remote files ? <y/n>");
                     if(s.next().charAt(0)=='y'){
-                    DriveService.service.files().delete(DriveService.folderId).execute();
-                    DriveService.hasFolder("CryptoDrive");}
+                        DriveService.service.files().delete(DriveService.folderId).execute();
+                        System.out.println("Remote files deleted.");
+                        DriveService.hasFolder("CryptoDrive");}
                     break;
                 case 5:
                     System.exit(0);
