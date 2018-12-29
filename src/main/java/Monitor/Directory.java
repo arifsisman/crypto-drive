@@ -14,10 +14,10 @@ import java.util.ArrayList;
 public class Directory {
     private static ArrayList<Path> pathList = new ArrayList<>();
     public static void checkDirectory() throws IOException {
-        Path cryptoFolderPath = Path.of(CDPaths.CRYPTO_DRIVE);
-        pathList.add(Path.of(CDPaths.CRYPTO_DRIVE_UPLOAD));
-        pathList.add(Path.of(CDPaths.CRYPTO_DRIVE_DOWNLOAD));
-        pathList.add(Path.of(CDPaths.CRYPTO_DRIVE_ENCRYPTED));
+        Path cryptoFolderPath = CDPaths.CRYPTO_DRIVE_PATH;
+        pathList.add(CDPaths.CRYPTO_DRIVE_UPLOAD_PATH);
+        pathList.add(CDPaths.CRYPTO_DRIVE_DOWNLOAD_PATH);
+        pathList.add(CDPaths.CRYPTO_DRIVE_ENCRYPTED_PATH);
 
         if(Files.exists(cryptoFolderPath)){
             for(Path p : pathList)

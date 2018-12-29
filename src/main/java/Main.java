@@ -5,7 +5,6 @@ import Monitor.DirWatcher;
 import Monitor.Directory;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.security.GeneralSecurityException;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
@@ -19,7 +18,7 @@ public class Main {
     private static Thread t;
     private static Future<?> future;
     static SimpleMenu menu;
-    public static void main(String[] args) throws IOException, GeneralSecurityException, InterruptedException {
+    public static void main(String[] args) throws IOException, GeneralSecurityException{
         //Drive Service initialization
         DriveService.initialize();
 
@@ -34,11 +33,6 @@ public class Main {
         menu = new SimpleMenu();
         menu.listen();
 
-//        if(new Scanner(System.in).nextInt() == 0){
-//            t.join();
-//            future.cancel(true);
-//            System.exit(0);
-//        }
     }
 
     private static void threadMethod(){
@@ -46,7 +40,7 @@ public class Main {
             public void run() {
                 DirWatcher watcher = null;
                 try {
-                    watcher = new DirWatcher(Path.of(CDPaths.CRYPTO_DRIVE_UPLOAD));
+                    watcher = new DirWatcher(CDPaths.CRYPTO_DRIVE_UPLOAD_PATH);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

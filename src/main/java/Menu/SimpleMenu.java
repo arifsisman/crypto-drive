@@ -50,15 +50,16 @@ public class SimpleMenu {
         itemList.add(new Item("1","Upload"));
         itemList.add(new Item("2","Download"));
         itemList.add(new Item("3","Delete Local Files"));
-        itemList.add(new Item("4","Exit"));
+        itemList.add(new Item("3","Delete Remote Files"));
+        itemList.add(new Item("5","Exit"));
     }
 
     public static void display(){
-        System.out.println("---CryptoDrive---");
+        System.out.println("\n-----CryptoDrive-----");
         for (Item i: itemList){
             System.out.println(i.itemId+") "+i.itemName);
         }
-        System.out.println("-----------------");
+        System.out.println("---------------------");
     }
 
     public static void listen() throws IOException {
@@ -90,12 +91,12 @@ public class SimpleMenu {
                     break;
                 case 3:
                     break;
-                case 4:
+                case 5:
                     System.exit(0);
                 default:
                     System.out.println("Invalid Selection\n");
                     break;
             }
-        }while(choice!=4);
+        }while(choice!=5);
     }
 }
