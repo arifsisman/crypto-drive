@@ -6,7 +6,6 @@ import Monitor.DirWatcher;
 import Monitor.Directory;
 
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
@@ -45,7 +44,7 @@ public class Main {
             public void run() {
                 DirWatcher watcher = null;
                 try {
-                    watcher = new DirWatcher(Paths.get(Constants.CRYPTO_DRIVE_UPLOAD));
+                    watcher = new DirWatcher(Constants.CRYPTO_DRIVE_UPLOAD_PATH);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

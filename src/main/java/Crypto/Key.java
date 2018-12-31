@@ -1,7 +1,7 @@
 package Crypto;
 
+import CryptoDrive.Constants;
 import org.apache.commons.codec.digest.DigestUtils;
-//import org.bouncycastle.util.encoders.Hex;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -14,20 +14,23 @@ import java.security.cert.CertificateException;
  * @author Mustafa Sisman
  */
 class Key {
-    private final String KEYSTORE_PATH = "tokens/keystore.jks";
     private final char[] KEYSTORE_PASSWORD = "CryptoDrive".toCharArray();
     private static KeyStore keyStore;
 
     Key() throws KeyStoreException, IOException, CertificateException, NoSuchAlgorithmException {
         keyStore = KeyStore.getInstance("JCEKS");
-        File f = new File(KEYSTORE_PATH);
+        File f = new File(Constants.KEYSTORE_PATH);
         if(!f.exists()){
             f.getParentFile().mkdir();
             f.createNewFile();
             keyStore.load(null, KEYSTORE_PASSWORD);
         }
-        else
-            keyStore.load(new FileInputStream(KEYSTORE_PATH), KEYSTORE_PASSWORD);
+        else{
+            if(f.length()==0)
+                keyStore.load(null, KEYSTORE_PASSWORD);
+            else
+                keyStore.load(new FileInputStream(Constants.KEYSTORE_PATH), KEYSTORE_PASSWORD);
+        }
     }
 
     SecretKey generateKey() throws NoSuchAlgorithmException {
@@ -37,7 +40,7 @@ class Key {
     }
 
     void storeKey() throws IOException, CertificateException, NoSuchAlgorithmException, KeyStoreException {
-        try (FileOutputStream keyStoreOutputStream = new FileOutputStream(KEYSTORE_PATH)) {
+        try (FileOutputStream keyStoreOutputStream = new FileOutputStream(Constants.KEYSTORE_PATH)) {
             keyStore.store(keyStoreOutputStream, KEYSTORE_PASSWORD);
         }
     }

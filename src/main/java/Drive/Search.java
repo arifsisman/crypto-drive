@@ -73,7 +73,7 @@ public class Search {
                 if(!hasFolder){
                     hasFolder = true;
                     folderId=file.getId();}
-                    System.out.printf("Found folder: %s (%s)\n", file.getName(), file.getId());
+                    System.out.printf("\nFound folder: %s (%s)\n", file.getName(), file.getId());
             }
             pageToken = result.getNextPageToken();
         } while (pageToken != null);}
