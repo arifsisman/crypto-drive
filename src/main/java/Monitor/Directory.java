@@ -1,11 +1,12 @@
 package Monitor;
 
-import File.CDPaths;
+import CryptoDrive.Constants;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 /**
@@ -14,10 +15,10 @@ import java.util.ArrayList;
 public class Directory {
     private static ArrayList<Path> pathList = new ArrayList<>();
     public static void checkDirectory() throws IOException {
-        Path cryptoFolderPath = CDPaths.CRYPTO_DRIVE_PATH;
-        pathList.add(CDPaths.CRYPTO_DRIVE_UPLOAD_PATH);
-        pathList.add(CDPaths.CRYPTO_DRIVE_DOWNLOAD_PATH);
-        pathList.add(CDPaths.CRYPTO_DRIVE_ENCRYPTED_PATH);
+        Path cryptoFolderPath = Paths.get(Constants.CRYPTO_DRIVE);
+        pathList.add(Paths.get(Constants.CRYPTO_DRIVE_UPLOAD));
+        pathList.add(Paths.get(Constants.CRYPTO_DRIVE_DOWNLOAD));
+        pathList.add(Paths.get(Constants.CRYPTO_DRIVE_ENCRYPTED));
 
         if(Files.exists(cryptoFolderPath)){
             for(Path p : pathList)

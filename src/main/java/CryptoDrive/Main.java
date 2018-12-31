@@ -1,10 +1,12 @@
+package CryptoDrive;
+
 import Drive.DriveService;
-import File.CDPaths;
 import Menu.SimpleMenu;
 import Monitor.DirWatcher;
 import Monitor.Directory;
 
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
@@ -18,6 +20,7 @@ public class Main {
     private static Thread t;
     private static Future<?> future;
     static SimpleMenu menu;
+
     public static void main(String[] args) throws IOException, GeneralSecurityException, InterruptedException {
         //Drive Service initialization
         DriveService.initialize();
@@ -42,7 +45,7 @@ public class Main {
             public void run() {
                 DirWatcher watcher = null;
                 try {
-                    watcher = new DirWatcher(CDPaths.CRYPTO_DRIVE_UPLOAD_PATH);
+                    watcher = new DirWatcher(Paths.get(Constants.CRYPTO_DRIVE_UPLOAD));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -52,5 +55,4 @@ public class Main {
             }
         };
     }
-
 }

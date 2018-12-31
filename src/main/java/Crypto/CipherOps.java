@@ -1,7 +1,7 @@
 package Crypto;
+import CryptoDrive.Constants;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import java.nio.charset.StandardCharsets;
 
 import javax.crypto.*;
@@ -15,7 +15,6 @@ import java.security.*;
 import java.security.cert.CertificateException;
 
 import static Drive.DriveService.folderId;
-import File.CDPaths;
 
 /**
  * @author Mustafa Sisman
@@ -37,7 +36,7 @@ public class CipherOps {
 
     public CipherOps() {
         //Bouncy Castle provider for crypto operations
-        Security.addProvider(new BouncyCastleProvider());
+        //Security.addProvider(new BouncyCastleProvider());
     }
 
     public void encrypt(String filePath) throws BadPaddingException, IllegalBlockSizeException, IOException, NoSuchAlgorithmException, InvalidKeyException, KeyStoreException, InvalidAlgorithmParameterException, CertificateException {
@@ -50,7 +49,7 @@ public class CipherOps {
         cipher.init(Cipher.ENCRYPT_MODE, skeySpec, iv);
         byte[] plainText  = Files.readAllBytes(path);
         byte[] cipherText = cipher.doFinal(plainText);
-        toFile(CDPaths.CRYPTO_DRIVE_ENCRYPTED,path.getFileName()+".enc", cipherText);
+        toFile(Constants.CRYPTO_DRIVE_ENCRYPTED,path.getFileName()+".enc", cipherText);
     }
 
     public void decrypt(String filePath) throws BadPaddingException, IllegalBlockSizeException, IOException, NoSuchAlgorithmException, InvalidKeyException, UnrecoverableEntryException, KeyStoreException{
@@ -66,7 +65,7 @@ public class CipherOps {
         }
         byte[] cipherText  = Files.readAllBytes(path);
         byte[] plainText = cipher.doFinal(cipherText);
-        toFile(CDPaths.CRYPTO_DRIVE_DOWNLOAD, fileName, plainText);
+        toFile(Constants.CRYPTO_DRIVE_DOWNLOAD, fileName, plainText);
     }
 
     private void toFile(String directory,String fileName,byte[] content) throws IOException {

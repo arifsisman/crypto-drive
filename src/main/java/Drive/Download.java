@@ -1,5 +1,6 @@
 package Drive;
 
+import CryptoDrive.Constants;
 import Menu.SimpleMenu;
 import com.google.api.services.drive.model.File;
 
@@ -9,7 +10,6 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import static Drive.DriveService.service;
-import File.CDPaths;
 
 /**
  * @author Mustafa Sisman
@@ -43,7 +43,7 @@ public class Download {
             service.files().get(fileId)
                     .executeMediaAndDownloadTo(outputStream);
             try {
-                fos = new FileOutputStream(new java.io.File( CDPaths.CRYPTO_DRIVE_ENCRYPTED + java.io.File.separator + fileName));
+                fos = new FileOutputStream(new java.io.File( Constants.CRYPTO_DRIVE_ENCRYPTED + java.io.File.separator + fileName));
                 outputStream.writeTo(fos);
             } catch(IOException ioe) {
                 ioe.printStackTrace();

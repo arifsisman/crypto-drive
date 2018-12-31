@@ -1,9 +1,9 @@
 package Monitor;
 
 import Crypto.CipherOps;
+import CryptoDrive.Constants;
 import Drive.DriveService;
 import Drive.Upload;
-import File.CDPaths;
 import File.Zip;
 import Menu.SimpleMenu;
 
@@ -61,11 +61,11 @@ public class DirWatcher implements Runnable {
                     if (StandardWatchEventKinds.ENTRY_CREATE.equals(kind)){
                         if(dir.resolve(ev.context()).toFile().isFile()){
                             cipher.encrypt(dir.resolve(ev.context()).toString());
-                            Upload.toFolder(DriveService.folderId, CDPaths.CRYPTO_DRIVE_ENCRYPTED + File.separator +ev.context().getFileName()+".enc");
+                            Upload.toFolder(DriveService.folderId, Constants.CRYPTO_DRIVE_ENCRYPTED + File.separator +ev.context().getFileName()+".enc");
                             SimpleMenu.display();
                         }
                         else{
-                            String folderPath = CDPaths.CRYPTO_DRIVE_UPLOAD+File.separator+ev.context();
+                            String folderPath = Constants.CRYPTO_DRIVE_UPLOAD+File.separator+ev.context();
                             Zip zip = new Zip();
                             //wait thread to complete generate file lists for folder
                             await().atMost(10, SECONDS).until(() -> zip.generateFileListHelper(new File(folderPath),folderPath));

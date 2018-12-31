@@ -1,9 +1,9 @@
 package Menu;
 
 import Crypto.CipherOps;
+import CryptoDrive.Constants;
 import Drive.Download;
 import Drive.DriveService;
-import File.CDPaths;
 import File.Zip;
 import Monitor.Directory;
 import org.apache.commons.io.FileUtils;
@@ -71,20 +71,20 @@ public class SimpleMenu {
             choice = s.nextInt();
             switch (choice){
                 case 1:
-                    System.out.println("Drag&Drop files into "+CDPaths.CRYPTO_DRIVE_UPLOAD);
+                    System.out.println("Drag&Drop files into "+ Constants.CRYPTO_DRIVE_UPLOAD);
                     break;
                 case 2:
                     String fileName = Download.listAndDownload(20);
                     try {
-                        cipher.decrypt(CDPaths.CRYPTO_DRIVE_ENCRYPTED + File.separator + fileName);
-                        String filePath = CDPaths.CRYPTO_DRIVE_DOWNLOAD + File.separator + FilenameUtils.getBaseName(fileName);
+                        cipher.decrypt(Constants.CRYPTO_DRIVE_ENCRYPTED + File.separator + fileName);
+                        String filePath = Constants.CRYPTO_DRIVE_DOWNLOAD + File.separator + FilenameUtils.getBaseName(fileName);
                         RandomAccessFile raf = new RandomAccessFile(new File(filePath), "r");
                         long n = raf.readInt();
                         raf.close();
                         //if zip file
                         if (n == 0x504B0304){
                             Zip z = new Zip();
-                            z.unzipIt(filePath,CDPaths.CRYPTO_DRIVE_DOWNLOAD + File.separator + FilenameUtils.getBaseName(FilenameUtils.getBaseName(fileName)));
+                            z.unzipIt(filePath, Constants.CRYPTO_DRIVE_DOWNLOAD + File.separator + FilenameUtils.getBaseName(FilenameUtils.getBaseName(fileName)));
                             //delete temp .zip
                             new File(filePath).delete();
                         }
@@ -96,7 +96,7 @@ public class SimpleMenu {
                 case 3:
                     System.out.println("Do you want to delete local files ? <y/n>");
                     if(s.next().charAt(0)=='y'){
-                        FileUtils.deleteDirectory(new File(CDPaths.CRYPTO_DRIVE));
+                        FileUtils.deleteDirectory(new File(Constants.CRYPTO_DRIVE));
                         System.out.println("Local files deleted.");
                         Directory.checkDirectory();
                     }

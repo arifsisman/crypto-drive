@@ -1,6 +1,7 @@
 package Crypto;
 
-import org.bouncycastle.util.encoders.Hex;
+import org.apache.commons.codec.digest.DigestUtils;
+//import org.bouncycastle.util.encoders.Hex;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
@@ -61,6 +62,6 @@ class Key {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] hash = digest.digest(
                 fileName.getBytes(StandardCharsets.UTF_8));
-        return new String(Hex.encode(hash));
+        return new String(DigestUtils.shaHex(hash));
     }
 }
