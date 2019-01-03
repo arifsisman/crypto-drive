@@ -65,6 +65,6 @@ class Key {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] hash = digest.digest(
                 fileName.getBytes(StandardCharsets.UTF_8));
-        return new String(DigestUtils.shaHex(hash));
+        return DigestUtils.shaHex(hash);
     }
 }

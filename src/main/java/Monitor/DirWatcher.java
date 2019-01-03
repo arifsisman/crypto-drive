@@ -68,17 +68,17 @@ public class DirWatcher implements Runnable {
                             String folderPath = Constants.CRYPTO_DRIVE_UPLOAD+File.separator+ev.context();
                             Zip zip = new Zip();
                             //wait thread to complete generate file lists for folder
-                            await().atMost(10, SECONDS).until(() -> zip.generateFileListHelper(new File(folderPath),folderPath));
+                            await().atMost(20, SECONDS).until(() -> zip.generateFileListHelper(new File(folderPath),folderPath));
                             zip.zipIt(folderPath, folderPath);
                             cipher.encrypt(folderPath+".zip");
                             //Note to myself-> This method call is not needed because polling thread detects and uploads the .zip file already!
                             //Upload.toFolder(DriveService.folderId, encZipFolderPath);
                         }
                     }
-                    if (StandardWatchEventKinds.ENTRY_DELETE.equals(kind)){
-                    }
-                    if (StandardWatchEventKinds.ENTRY_MODIFY.equals(kind)){
-                    }
+//                    if (StandardWatchEventKinds.ENTRY_DELETE.equals(kind)){
+//                    }
+//                    if (StandardWatchEventKinds.ENTRY_MODIFY.equals(kind)){
+//                    }
                 }
 
                 // reset key

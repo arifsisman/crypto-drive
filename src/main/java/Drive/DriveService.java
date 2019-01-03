@@ -13,6 +13,7 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.drive.DriveScopes;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -39,6 +40,7 @@ public class DriveService {
         // Load client secrets.
         try{
         InputStream in = DriveService.class.getResourceAsStream(Constants.CREDENTIALS_FILE_PATH);
+        //InputStream in = new FileInputStream("C:\\Users\\musta\\IdeaProjects\\CryptoDrive\\src\\main\\resources\\credentials.json");
         clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));}
         catch (Exception e){
             e.printStackTrace();

@@ -35,8 +35,6 @@ public class CipherOps {
     }
 
     public CipherOps() {
-        //Bouncy Castle provider for crypto operations
-        //Security.addProvider(new BouncyCastleProvider());
     }
 
     public void encrypt(String filePath) throws BadPaddingException, IllegalBlockSizeException, IOException, NoSuchAlgorithmException, InvalidKeyException, KeyStoreException, InvalidAlgorithmParameterException, CertificateException {
